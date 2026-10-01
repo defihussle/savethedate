@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5ede4" />
+  <title>Save the Date</title>
+  <meta name="description" content="We're getting married — save the date." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Cpath d=%27M16 28C6 20 3 15 3 10a6.5 6.5 0 0 1 13-1a6.5 6.5 0 0 1 13 1c0 5-3 10-13 18z%27 fill=%27none%27 stroke=%27%239b8559%27 stroke-width=%271.6%27/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Pinyon+Script&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body class="intro">
+  <div class="paper" aria-hidden="true"></div>
+
+  <!-- PAGE 1 — Photo booth entrance -->
+  <section class="booth-page paper" id="boothPage" aria-label="Photo booth entrance">
+    <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false" aria-label="Turn sound on">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+        <path class="sound-waves" d="M15 9.5a3.5 3.5 0 0 1 0 5M17.2 7.5a6.5 6.5 0 0 1 0 9" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        <path class="sound-mute" d="M15.5 10l4 4M19.5 10l-4 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="booth-top">
+      <p class="eyebrow">We&rsquo;re getting married!</p>
+      <h1 class="names script"><span data-bind="partner1"></span> <span class="amp">&amp;</span> <span data-bind="partner2"></span></h1>
+    </div>
+
+    <div class="booth" id="booth">
+      <svg class="booth-layer" id="boothTails" aria-hidden="true"></svg>
+      <svg class="booth-layer booth-frame" id="boothFrame" aria-hidden="true"></svg>
+      <div class="strip-clip" id="stripClip">
+        <div class="strip-lift" id="stripLift">
+          <div class="strip strip--booth" id="boothStrip" role="button" aria-label="Enter the invitation" tabindex="-1">
+            <span class="strip-sway" id="stripSway">
+              <span class="strip-paper">
+                <img alt="" data-photo="booth" data-i="0" />
+                <img alt="" data-photo="booth" data-i="1" />
+                <img alt="" data-photo="booth" data-i="2" />
+                <span class="strip-caption script" data-bind="stripCaption"></span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <svg class="booth-layer booth-bow" id="boothBow" aria-hidden="true"></svg>
+    </div>
+
+    <div class="enter-wrap">
+      <button class="enter" id="enterBtn" type="button" disabled>
+        <span>Click to enter</span>
+        <svg viewBox="0 0 60 22" aria-hidden="true"><path d="M30 1v15M25.5 11.5 30 16l4.5-4.5M8 19c7-1 14-1 22 1c8-2 15-2 22-1" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="replay" id="replayBtn" type="button" disabled>Replay photo booth</button>
+    </div>
+  </section>
+
+  <main class="site" id="site">
+    <!-- PAGE 2 — Save the Date -->
+    <section class="hero" aria-label="Save the date">
+      <svg class="h-layer h-oval" id="heroOval" aria-hidden="true"></svg>
+      <div class="h-text">
+        <h2 class="std script">
+          <span class="std-save">Save</span>
+          <span class="std-line"><span class="std-the">the</span><span class="std-date">Date</span></span>
+        </h2>
+        <p class="std-num" data-bind="dateShort"></p>
+      </div>
+      <svg class="h-layer h-ribbon-back" id="ribbonBack" aria-hidden="true"></svg>
+      <div class="h-strip">
+        <div class="strip strip--hero">
+          <span class="strip-paper">
+            <img alt="" data-photo="hero" data-i="0" />
+            <img alt="" data-photo="hero" data-i="1" />
+            <img alt="" data-photo="hero" data-i="2" />
+          </span>
+        </div>
+      </div>
+      <svg class="h-layer h-lilies" id="lilies" aria-hidden="true"></svg>
+      <svg class="h-layer h-ribbon-front" id="ribbonFront" aria-hidden="true"></svg>
+      <svg class="h-layer h-locket" id="locket" aria-hidden="true"></svg>
+    </section>
+
+    <section class="countdown" aria-label="Countdown to the wedding" data-reveal>
+      <div class="cd-grid" id="countdown">
+        <span class="cd-unit"><span class="cd-num" id="cdDays">000</span><span class="cd-label">Days</span></span><span class="cd-sep">:</span>
+        <span class="cd-unit"><span class="cd-num" id="cdHours">00</span><span class="cd-label">Hours</span></span><span class="cd-sep">:</span>
+        <span class="cd-unit"><span class="cd-num" id="cdMins">00</span><span class="cd-label">Mins</span></span><span class="cd-sep">:</span>
+        <span class="cd-unit"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">Secs</span></span>
+      </div>
+      <p class="cd-today script" id="cdToday" hidden>Today&rsquo;s the Day</p>
+    </section>
+
+    <svg class="cupids" id="cupids" viewBox="0 0 300 104" role="img" aria-label="Two cupids aiming at a heart" data-reveal></svg>
+
+    <a class="continue" href="#details" data-reveal>
+      <span>Share your details</span>
+      <svg viewBox="0 0 12 40" aria-hidden="true"><path d="M6 0v37M2 33l4 4 4-4" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <!-- PAGE 3 — Share your details -->
+    <section class="details" id="details" aria-label="Share your details">
+      <h2 class="details-title script" data-reveal>Share<br />Your Details</h2>
+      <p class="lede" data-reveal>Please share your mailing address and names so we can send you the details of our special day.</p>
+
+      <form class="details-form" id="detailsForm" name="details" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-reveal>
+        <input type="hidden" name="form-name" value="details" />
+        <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <label class="field">
+          <span>Who should the invitation be addressed to? Please list the full name(s).</span>
+          <textarea name="names" rows="2" required autocomplete="name"></textarea>
+        </label>
+        <label class="field">
+          <span>What is your mailing address?</span>
+          <textarea name="address" rows="3" required autocomplete="street-address"></textarea>
+        </label>
+        <label class="field">
+          <span>Is there anything we should know to better accommodate you?</span>
+          <textarea name="accommodations" rows="2"></textarea>
+        </label>
+        <button class="submit" type="submit">See you there</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="small-caps sincerely" data-reveal>Sincerely</p>
+      <p class="signature script" data-reveal><span data-bind="partner1"></span> <span class="amp">&amp;</span> <span data-bind="partner2"></span></p>
+    </section>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
