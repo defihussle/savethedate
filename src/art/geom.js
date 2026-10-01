@@ -67,47 +67,70 @@ const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 
 // A strip of fabric following `curve`, twisting about its own axis by twist(t) radians.
 // Each slice is lit like a real surface, which is what gives satin/silk its sheen.
+//   cup     – cross-section curvature (radians edge to edge), so light rolls across the width
+//   strips  – slices across the width, needed for `cup` to show
+//   folds   – [amplitude, frequency] of soft wrinkles rippling along the length
+//   ao(t)   – ambient occlusion factor, e.g. darkening where fabric tucks under a knot
 export function ribbon(curve, o) {
   const {
     w, twist = () => 0, wfn = () => 1, n = 110, from = 0, to = 1,
     base, back = base, amb = 0.5, dif = 0.55, spec = 0.5, shin = 14,
     light = [-0.45, -0.6, 0.66], vcut = false,
+    cup = 0, strips = 1, folds = [0, 0], ao = () => 1,
   } = o;
   const L = norm(light), H = norm([L[0], L[1], L[2] + 1]);
+  const lit = (nrm) => {
+    const v = nrm[2] < 0 ? nrm.map((x) => -x) : nrm;
+    return [Math.max(0, dot(v, L)), Math.pow(Math.max(0, dot(v, H)), shin)];
+  };
   const pts = [];
   for (let i = 0; i <= n; i++) {
     const t = lerp(from, to, i / n);
     const p = curve(t);
     const [tx, ty] = tangentAt(curve, t);
-    const th = twist(t), c = Math.cos(th), s = Math.sin(th);
+    const th = twist(t) + folds[0] * Math.sin(t * folds[1] * 2 * PI);
+    const c = Math.cos(th);
     const hw = (w / 2) * wfn(t);
-    const ex = -ty * c * hw, ey = tx * c * hw;
-    let nrm = [ty * s, -tx * s, c];
-    const front = c >= 0;
-    if (!front) nrm = nrm.map((v) => -v);
-    pts.push({
-      p, a: [p[0] + ex, p[1] + ey], b: [p[0] - ex, p[1] - ey],
-      d: Math.max(0, dot(nrm, L)), sp: Math.pow(Math.max(0, dot(nrm, H)), shin),
-      front, tan: [tx, ty], hw,
-    });
+    const E = [-ty * c * hw, tx * c * hw];
+    const cols = [];
+    for (let j = 0; j < strips; j++) {
+      const sm = strips === 1 ? 0 : -1 + (2 * j + 1) / strips;
+      const ph = th + (cup / 2) * sm;
+      cols.push(lit([ty * Math.sin(ph), -tx * Math.sin(ph), Math.cos(ph)]));
+    }
+    pts.push({ p, E, front: c >= 0, tan: [tx, ty], hw, cols, ao: ao(t) });
   }
-  const shade = (A, B) => {
+  const at = (P, s) => [P.p[0] + P.E[0] * s, P.p[1] + P.E[1] * s];
+  const shade = (A, B, j) => {
     const col = A.front ? base : back;
-    const d = (A.d + B.d) / 2, sp = (A.sp + B.sp) / 2;
-    const ch = col.map((v) => Math.round(Math.min(255, v * (amb + dif * d) + 255 * spec * sp)));
+    const d = (A.cols[j][0] + B.cols[j][0]) / 2, sp = (A.cols[j][1] + B.cols[j][1]) / 2;
+    const k = (A.ao + B.ao) / 2;
+    const ch = col.map((v) => Math.round(Math.min(255, (v * (amb + dif * d) + 255 * spec * sp) * k)));
     return `rgb(${ch.join(',')})`;
   };
   let out = '';
   for (let i = 0; i < n; i++) {
     const A = pts[i], B = pts[i + 1];
-    const col = shade(A, B);
-    out += `<path d="M${pt(A.a)}L${pt(B.a)}L${pt(B.b)}L${pt(A.b)}Z" fill="${col}" stroke="${col}"/>`;
+    for (let j = 0; j < strips; j++) {
+      const s0 = -1 + (2 * j) / strips, s1 = -1 + (2 * (j + 1)) / strips;
+      const col = shade(A, B, j);
+      out += `<path d="M${pt(at(A, s0))}L${pt(at(B, s0))}L${pt(at(B, s1))}L${pt(at(A, s1))}Z" fill="${col}" stroke="${col}"/>`;
+    }
   }
   if (vcut) {
-    const E = pts[n], k = E.hw * 1.2;
+    const E = pts[n], k = E.hw * 1.2, mid = Math.floor(strips / 2);
     const ext = (q) => [q[0] + E.tan[0] * k, q[1] + E.tan[1] * k];
-    const col = shade(pts[n - 1], E);
-    out += `<path d="M${pt(E.a)}L${pt(ext(E.a))}L${pt(E.p)}L${pt(ext(E.b))}L${pt(E.b)}Z" fill="${col}" stroke="${col}"/>`;
+    const col = shade(pts[n - 1], E, mid);
+    out += `<path d="M${pt(at(E, 1))}L${pt(ext(at(E, 1)))}L${pt(E.p)}L${pt(ext(at(E, -1)))}L${pt(at(E, -1))}Z" fill="${col}" stroke="${col}"/>`;
   }
   return `<g stroke-width=".45" stroke-linejoin="round">${out}</g>`;
 }
+
+// ── Lit 3D meshes (lily petals, locket metal) ──────────────────────────────
+export const v3 = {
+  sub: (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]],
+  cross: (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]],
+  norm, dot,
+};
+export const smoothstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+export const rgb = (c) => `rgb(${c.map((v) => Math.round(Math.max(0, Math.min(255, v)))).join(',')})`;

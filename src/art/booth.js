@@ -2,7 +2,7 @@
 // Shared coordinate system: viewBox "0 -110 300 730". The frame occupies y 0–620,
 // the bow and its ribbon live in the 110 units above it.
 
-import { PI, cubic, spiral, taper, lineW, lerp, tangentAt, ribbon } from './geom.js';
+import { PI, cubic, spiral, taper, lineW, lerp, tangentAt, ribbon, smoothstep } from './geom.js';
 
 export const BOOTH_VIEWBOX = '0 -110 300 730';
 export const SLOT_Y = 113; // centre line of the printing slot, frame units
@@ -195,40 +195,64 @@ export function frameSVG() {
 }
 
 // ── Satin bow ──────────────────────────────────────────────────────────────
-const IVORY = [236, 227, 206];
-const IVORY_BACK = [222, 211, 186];
+// Double-faced ivory satin: each band is slightly cupped so light rolls across it,
+// carries soft wrinkles along its length, and darkens where it gathers into the knot.
+const IVORY = [238, 229, 210];
+const IVORY_BACK = [224, 213, 190];
 const K = [150, -70];
 
 const satin = (curve, extra) => ribbon(curve, {
-  w: 15, base: IVORY, back: IVORY_BACK, amb: 0.62, dif: 0.42, spec: 0.55, shin: 10, ...extra,
+  w: 15, base: IVORY, back: IVORY_BACK, amb: 0.74, dif: 0.3, spec: 0.32, shin: 12,
+  cup: 0.8, strips: 10, folds: [0.1, 4], n: 120, ...extra,
 });
+
+// Fine woven grain, multiplied over the fabric only.
+const satinTexture = (id) => `
+  <filter id="${id}" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="1.6 .35" numOctaves="2" seed="7" result="n"/>
+    <feColorMatrix in="n" type="saturate" values="0" result="g"/>
+    <feComponentTransfer in="g" result="g2">
+      <feFuncR type="linear" slope=".16" intercept=".9"/><feFuncG type="linear" slope=".16" intercept=".9"/>
+      <feFuncB type="linear" slope=".16" intercept=".9"/><feFuncA type="linear" slope="0" intercept="1"/>
+    </feComponentTransfer>
+    <feBlend in="SourceGraphic" in2="g2" mode="multiply" result="m"/>
+    <feComposite in="m" in2="SourceAlpha" operator="in"/>
+  </filter>`;
 
 // The two ribbon tails that run down and tuck behind the crest.
 export function bowTailsSVG() {
   const left = cubic([K[0] - 2, K[1] + 4], [K[0] - 12, K[1] + 34], [134, -34], [147, -2]);
   const right = cubic([K[0] + 2, K[1] + 4], [K[0] + 12, K[1] + 34], [166, -34], [153, -2]);
   const tw = (t) => 0.55 * Math.sin(PI * t * 1.6) - 0.1;
-  return satin(left, { twist: tw, wfn: (t) => 0.8 + 0.2 * t }) +
-    satin(right, { twist: (t) => -tw(t), wfn: (t) => 0.8 + 0.2 * t });
+  const ao = (t) => 0.8 + 0.2 * smoothstep(0, 0.2, t);
+  return `<defs>${satinTexture('satinTexTails')}</defs>
+  <g filter="url(#satinTexTails)">
+    ${satin(left, { twist: tw, wfn: (t) => 0.8 + 0.2 * t, ao })}
+    ${satin(right, { twist: (t) => -tw(t), wfn: (t) => 0.8 + 0.2 * t, ao })}
+  </g>`;
 }
 
 export function bowSVG() {
   const loop = (s) => cubic([K[0] - 3 * s, K[1] - 1], [K[0] - 56 * s, K[1] - 52], [K[0] - 88 * s, K[1] + 14], [K[0] - 4 * s, K[1] + 4]);
   const pinch = (t) => 0.32 + 0.68 * Math.pow(Math.sin(PI * t), 0.55);
   const tw = (t) => 0.25 + 0.95 * Math.sin(PI * t) * (t - 0.45) * 2;
+  const gather = (t) => 0.8 + 0.2 * smoothstep(0, 0.22, Math.min(t, 1 - t));
   // Short streamers that fall from the knot, cut in a swallowtail.
   const tail = (s) => cubic([K[0] + 2 * s, K[1] + 5], [K[0] + 16 * s, K[1] + 22], [K[0] + 26 * s, K[1] + 36], [K[0] + 36 * s, K[1] + 58]);
+  const tailAo = (t) => 0.74 + 0.26 * smoothstep(0, 0.25, t);
+  // The knot: a short band wrapped over the gathered loops, strongly cupped like a cylinder.
+  const knot = cubic([K[0] + 0.5, K[1] - 11], [K[0] - 1.5, K[1] - 4], [K[0] - 1.5, K[1] + 4], [K[0] + 0.5, K[1] + 11]);
   return `
   <defs>
-    <linearGradient id="knot" x1="0" x2="1">
-      <stop offset="0" stop-color="#c9bc9b"/><stop offset=".35" stop-color="#fbf6ea"/>
-      <stop offset=".65" stop-color="#ece3cf"/><stop offset="1" stop-color="#b9ab89"/>
-    </linearGradient>
+    ${satinTexture('satinTex')}
+    <filter id="knotShadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
   </defs>
-  ${satin(tail(-1), { twist: (t) => 0.3 + 0.6 * t, vcut: true, w: 15 })}
-  ${satin(tail(1), { twist: (t) => -0.3 - 0.6 * t, vcut: true, w: 15 })}
-  ${satin(loop(1), { twist: tw, wfn: pinch, w: 22 })}
-  ${satin(loop(-1), { twist: (t) => -tw(t), wfn: pinch, w: 22 })}
-  <rect x="${K[0] - 10}" y="${K[1] - 10}" width="20" height="20" rx="7" fill="url(#knot)"/>
-  <path d="M${K[0] - 3} ${K[1] - 7}q-1.5 7 0 14M${K[0] + 3.2} ${K[1] - 6.5}q1.2 6.5 0 13" stroke="#a99b78" stroke-width=".55" fill="none" opacity=".7"/>`;
+  <g filter="url(#satinTex)">
+    ${satin(tail(-1), { twist: (t) => 0.3 + 0.6 * t, vcut: true, ao: tailAo })}
+    ${satin(tail(1), { twist: (t) => -0.3 - 0.6 * t, vcut: true, ao: tailAo })}
+    ${satin(loop(1), { twist: tw, wfn: pinch, w: 22, ao: gather, folds: [0.14, 3] })}
+    ${satin(loop(-1), { twist: (t) => -tw(t), wfn: pinch, w: 22, ao: gather, folds: [0.14, 3] })}
+    <ellipse cx="${K[0] + 1.5}" cy="${K[1] + 2.5}" rx="13" ry="12" fill="#5c4a2a" opacity=".32" filter="url(#knotShadow)"/>
+    ${satin(knot, { w: 19, wfn: (t) => 0.86 + 0.14 * Math.sin(PI * t), cup: 1.9, strips: 16, n: 40, folds: [0.18, 1.5] })}
+  </g>`;
 }

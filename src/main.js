@@ -1,6 +1,6 @@
 import { WEDDING } from './config.js';
 import { BOOTH_VIEWBOX, frameSVG, bowSVG, bowTailsSVG } from './art/booth.js';
-import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, liliesSVG, locketSVG, cupidsSVG } from './art/hero.js';
+import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, liliesSVG, locketSVG, locketInitialsSVG, cupidsSVG } from './art/hero.js';
 import { PrinterSound } from './sound.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -20,14 +20,28 @@ const paint = (id, viewBox, markup) => {
   svg.setAttribute('viewBox', viewBox);
   svg.innerHTML = markup;
 };
-paint('boothTails', BOOTH_VIEWBOX, bowTailsSVG());
+// The photoreal pieces are built from thousands of lit facets. Rasterising each into a
+// single image keeps the page light on phones; the browser still draws it at full sharpness.
+const paintImage = (id, viewBox, markup, overlay = '') => {
+  const P = 40; // bleed so shadows and ribbon ends aren't cropped at the layer edge
+  const [x, y, w, h] = viewBox.split(' ').map(Number);
+  const box = [x - P, y - P, w + 2 * P, h + 2 * P];
+  const doc = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box.join(' ')}" width="${box[2] * 4}" height="${box[3] * 4}">${markup}</svg>`;
+  const url = URL.createObjectURL(new Blob([doc], { type: 'image/svg+xml' }));
+  paint(id, viewBox, `<image href="${url}" x="${box[0]}" y="${box[1]}" width="${box[2]}" height="${box[3]}"/>${overlay}`);
+};
+paintImage('boothTails', BOOTH_VIEWBOX, bowTailsSVG());
 paint('boothFrame', BOOTH_VIEWBOX, frameSVG());
-paint('boothBow', BOOTH_VIEWBOX, bowSVG());
-paint('heroOval', HERO_VIEWBOX, ovalSVG());
-paint('ribbonBack', HERO_VIEWBOX, ribbonBackSVG());
-paint('lilies', HERO_VIEWBOX, liliesSVG());
-paint('ribbonFront', HERO_VIEWBOX, ribbonFrontSVG());
-paint('locket', HERO_VIEWBOX, locketSVG(WEDDING.initial1, WEDDING.initial2));
+paintImage('boothBow', BOOTH_VIEWBOX, bowSVG());
+// Page 2 art is built after the booth starts, so the entrance appears instantly.
+const paintHero = () => {
+  paint('heroOval', HERO_VIEWBOX, ovalSVG());
+  paintImage('ribbonBack', HERO_VIEWBOX, ribbonBackSVG());
+  paintImage('lilies', HERO_VIEWBOX, liliesSVG());
+  paintImage('ribbonFront', HERO_VIEWBOX, ribbonFrontSVG());
+  paintImage('locket', HERO_VIEWBOX, locketSVG(), locketInitialsSVG(WEDDING.initial1, WEDDING.initial2));
+};
+(window.requestIdleCallback || ((f) => setTimeout(f, 200)))(paintHero, { timeout: 1500 });
 $('#cupids').innerHTML = cupidsSVG();
 $('.strip--hero').style.aspectRatio = '90 / 232';
 

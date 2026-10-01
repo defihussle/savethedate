@@ -1,6 +1,7 @@
 // Page 2 artwork. All layers share viewBox "0 0 400 460" so they stack precisely.
 
-import { PI, cubic, chain, taper, lineW, ribbon, heartPath } from './geom.js';
+import { PI, cubic, chain, taper, lineW, ribbon, heartPath, tangentAt, pt, v3, smoothstep, rgb } from './geom.js';
+import { callaBloom } from './calla.js';
 
 export const HERO_VIEWBOX = '0 0 400 460';
 
@@ -43,99 +44,152 @@ export const ribbonBackSVG = () => `<g opacity=".78">${silk(0, RIBBON_SPLIT)}</g
 export const ribbonFrontSVG = () => `<g opacity=".78">${silk(RIBBON_SPLIT, 1)}</g>`;
 
 // ── Calla lilies ───────────────────────────────────────────────────────────
-function calla(id, stemLen) {
-  const stem = taper(cubic([0, 2], [3, stemLen * 0.3], [-5, stemLen * 0.7], [6, stemLen]), lineW(2.6, 3.4), 40);
+function calla(stemLen, rot, seed) {
+  const stem = taper(cubic([0, 1], [3, stemLen * 0.3], [-5, stemLen * 0.7], [6, stemLen]), lineW(2.3, 3.2), 50);
   return `
   <path d="${stem}" fill="url(#stem)"/>
-  <path d="M-0.8 6C0 ${stemLen * 0.3} -3.6 ${stemLen * 0.7} 5 ${stemLen}" stroke="#cfdcb0" stroke-width=".7" fill="none" opacity=".7"/>
-  <path d="M0 4C-6 -12 -13 -30 -15 -46C-17 -60 -10 -72 0 -77C11 -83 25 -85 36 -95C31 -82 27 -71 21 -62C16 -50 10 -26 6 -12C4 -5 2 -1 0 4Z" fill="url(#spathe${id})"/>
-  <path d="M0 4C-6 -12 -13 -30 -15 -46C-17 -60 -10 -72 0 -77C11 -83 25 -85 36 -95C31 -82 27 -71 21 -62C16 -50 10 -26 6 -12C4 -5 2 -1 0 4Z" fill="url(#spatheShade)"/>
-  <path d="M-12.5 -53C-12 -65 -4 -75 6 -77C16 -79 23 -77 25 -69C21 -61 14 -55 7 -50C0 -45 -8 -45 -12.5 -53Z" fill="url(#throat)"/>
-  <ellipse cx="4" cy="-59" rx="2.6" ry="11" transform="rotate(14 4 -59)" fill="url(#spadix)"/>
-  <path d="M-15 -46C-17 -60 -10 -72 0 -77C11 -83 25 -85 36 -95" stroke="#fff" stroke-width="1" fill="none" opacity=".85"/>
-  <path d="M22 -82C28 -86 32 -90 36 -95C31 -87 27 -82 23 -79Z" fill="#e7e0cc"/>
-  <g stroke="#b7c298" stroke-width=".5" fill="none" opacity=".45">
-    <path d="M2 -6C0 -26 -5 -46 -8 -64"/><path d="M5 -10C6 -30 9 -48 14 -66"/>
-  </g>`;
+  <path d="M-0.9 6C0 ${stemLen * 0.3} -3.8 ${stemLen * 0.7} 4.8 ${stemLen}" stroke="#d5e0bf" stroke-width=".55" fill="none" opacity=".6"/>
+  <g filter="url(#petalSoft)">${callaBloom({ H: 58, rot, seed })}</g>`;
 }
 
 export function liliesSVG() {
   return `
   <defs>
     <linearGradient id="stem" x1="0" x2="1">
-      <stop offset="0" stop-color="#7c955a"/><stop offset=".45" stop-color="#a8bd84"/><stop offset="1" stop-color="#6f874f"/>
+      <stop offset="0" stop-color="#6c8350"/><stop offset=".35" stop-color="#9db27f"/>
+      <stop offset=".55" stop-color="#b3c497"/><stop offset="1" stop-color="#5f7646"/>
     </linearGradient>
-    <linearGradient id="spathe1" x1="0" y1="1" x2=".3" y2="0">
-      <stop offset="0" stop-color="#b7c795"/><stop offset=".3" stop-color="#eef0dc"/><stop offset=".7" stop-color="#fffdf5"/><stop offset="1" stop-color="#fbf7ec"/>
-    </linearGradient>
-    <linearGradient id="spathe2" x1="0" y1="1" x2=".3" y2="0">
-      <stop offset="0" stop-color="#aebf8a"/><stop offset=".35" stop-color="#e8ebd5"/><stop offset="1" stop-color="#f8f4e8"/>
-    </linearGradient>
-    <linearGradient id="spatheShade" x1="0" x2="1">
-      <stop offset="0" stop-color="#b9ae90" stop-opacity=".45"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="1" stop-color="#a99e82" stop-opacity=".25"/>
-    </linearGradient>
-    <radialGradient id="throat" cx=".55" cy=".35" r=".8">
-      <stop offset="0" stop-color="#fffbef"/><stop offset=".6" stop-color="#f1ead6"/><stop offset="1" stop-color="#d2c7a8"/>
-    </radialGradient>
-    <linearGradient id="spadix" x1="0" x2="1">
-      <stop offset="0" stop-color="#d9b85a"/><stop offset=".5" stop-color="#f4df98"/><stop offset="1" stop-color="#c9a54a"/>
-    </linearGradient>
+    <filter id="petalSoft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".25"/></filter>
     <filter id="lilyShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/><feOffset dx="4" dy="6"/>
-      <feComponentTransfer><feFuncA type="linear" slope=".18"/></feComponentTransfer>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.2"/><feOffset dx="4" dy="6"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".16"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
   <g filter="url(#lilyShadow)">
-    <g transform="translate(74 322) rotate(-62) scale(.95)">${calla(2, 240)}</g>
-    <g transform="translate(96 262) rotate(-40) scale(1.22)">${calla(1, 215)}</g>
+    <g transform="translate(74 322) rotate(-62) scale(.95)">${calla(240, -62, 2)}</g>
+    <g transform="translate(96 262) rotate(-40) scale(1.22)">${calla(215, -40, 1)}</g>
   </g>`;
 }
 
 // ── Heart locket ───────────────────────────────────────────────────────────
-export function locketSVG(i1, i2) {
-  const half = (x, rot, letter) => `
+// Polished champagne gold: each rim is a rounded metal profile that reflects a soft
+// studio environment, so it reads as a real piece of jewellery.
+const GOLD = [236, 200, 132];
+const KEY = v3.norm([-0.45, -0.6, 0.66]);
+const FILL = v3.norm([0.65, -0.15, 0.74]);
+function metal(n) {
+  const R = [2 * n[2] * n[0], 2 * n[2] * n[1], 2 * n[2] * n[2] - 1];
+  const up = -R[1];
+  const e = 0.3 + 0.72 * smoothstep(-0.4, 0.6, up)
+    + 1.5 * Math.pow(Math.max(0, v3.dot(R, KEY)), 36)
+    + 0.45 * Math.pow(Math.max(0, v3.dot(R, FILL)), 10)
+    - 0.3 * Math.exp(-((up + 0.28) ** 2) / 0.01);
+  const hot = Math.max(0, e - 1);
+  return rgb(GOLD.map((c, k) => c * Math.min(e, 1.05) + hot * [255, 244, 220][k] * 0.55));
+}
+
+// A rounded metal band following a closed curve (screen coords).
+function metalRing(curve, W, nT = 180, nP = 9) {
+  const P = [];
+  let area = 0;
+  for (let i = 0; i < nT; i++) {
+    const a = curve(i / nT), b = curve((i + 1) / nT);
+    area += a[0] * b[1] - b[0] * a[1];
+  }
+  const sgn = area > 0 ? 1 : -1;
+  for (let i = 0; i <= nT; i++) {
+    const t = (i % nT) / nT;
+    const c = curve(t);
+    const [tx, ty] = tangentAt(curve, Math.min(0.9995, Math.max(0.0005, t)));
+    const N = [ty * sgn, -tx * sgn];
+    const row = [];
+    for (let j = 0; j <= nP; j++) {
+      const ph = -PI / 2 + (PI * j) / nP;
+      row.push({ p: [c[0] + N[0] * (W / 2) * Math.sin(ph), c[1] + N[1] * (W / 2) * Math.sin(ph)], n: v3.norm([N[0] * Math.sin(ph), N[1] * Math.sin(ph), Math.cos(ph)]) });
+    }
+    P.push(row);
+  }
+  let out = '';
+  for (let i = 0; i < nT; i++) {
+    for (let j = 0; j < nP; j++) {
+      const a = P[i][j], b = P[i + 1][j], c = P[i + 1][j + 1], d = P[i][j + 1];
+      const col = metal(v3.norm([a.n[0] + c.n[0], a.n[1] + c.n[1], a.n[2] + c.n[2]]));
+      out += `<path d="M${pt(a.p)}L${pt(b.p)}L${pt(c.p)}L${pt(d.p)}Z" fill="${col}" stroke="${col}"/>`;
+    }
+  }
+  return `<g stroke-width=".3">${out}</g>`;
+}
+
+// Same outline as heartPath(), as a closed parametric curve.
+function heartCurve(cx, cy, s, rotDeg) {
+  const r = (rotDeg * PI) / 180, cs = Math.cos(r), sn = Math.sin(r);
+  const P = (x, y) => { const X = x * s, Y = y * s; return [cx + X * cs - Y * sn, cy + X * sn + Y * cs]; };
+  return chain(
+    cubic(P(0, -0.32), P(0, -0.85), P(-0.95, -0.95), P(-0.98, -0.3)),
+    cubic(P(-0.98, -0.3), P(-1, 0.22), P(-0.5, 0.58), P(0, 0.98)),
+    cubic(P(0, 0.98), P(0.5, 0.58), P(1, 0.22), P(0.98, -0.3)),
+    cubic(P(0.98, -0.3), P(0.95, -0.95), P(0, -0.85), P(0, -0.32)),
+  );
+}
+const circleCurve = (cx, cy, r) => (t) => [cx + r * Math.cos(2 * PI * t), cy + r * Math.sin(2 * PI * t)];
+
+export function locketSVG() {
+  const half = (x, rot, id) => `
     <g transform="translate(${x} 0) rotate(${rot})">
-      <path d="${heartPath(0, 0, 34)}" fill="url(#lgold)" filter="url(#lEmboss)"/>
-      <path d="${heartPath(0, 0.8, 29.5)}" fill="none" stroke="#8a6b30" stroke-opacity=".55" stroke-width=".8"/>
-      <path d="${heartPath(0, 1, 26.5)}" fill="url(#lpaper)"/>
-      <path d="${heartPath(0, 1, 26.5)}" fill="none" stroke="#6e5424" stroke-opacity=".35" stroke-width="2.4" filter="url(#lInner)" clip-path="url(#lclip)"/>
-      <text x="0" y="12" text-anchor="middle" class="locket-initial">${letter}</text>
-    </g>`;
+      <path d="${heartPath(0.9, 2, 34.6)}" fill="#6d4f1f"/>
+      <path d="${heartPath(0, 1, 26.2)}" fill="url(#enamel)"/>
+      <g clip-path="url(#lclip${id})">
+        <path d="${heartPath(0, 1, 26.2)}" fill="none" stroke="#5b3f14" stroke-opacity=".5" stroke-width="5" filter="url(#lInner)" transform="translate(1.6 2.4)"/>
+        <path d="M-30 -14L-6 -30L30 18L12 34Z" fill="url(#glare)"/>
+      </g>
+    </g>
+    ${metalRing(heartCurve(x, 0, 30.6, rot), 7.6)}
+    ${metalRing(heartCurve(x, 0.6, 26.4, rot), 1.5, 150, 5)}
+    <g transform="translate(${x} 0) rotate(${rot})"><circle cx="0" cy="-8.6" r="2.6" fill="url(#bead)"/></g>`;
+  const knuckle = (y, h) => `<rect x="-4.6" y="${y}" width="9.2" height="${h}" rx="2" fill="url(#hinge)"/>`;
   return `
   <defs>
-    <linearGradient id="lgold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f4e2ae"/><stop offset=".4" stop-color="#d4b471"/>
-      <stop offset=".7" stop-color="#ecd49b"/><stop offset="1" stop-color="#b08b48"/>
-    </linearGradient>
-    <radialGradient id="lpaper" cx=".45" cy=".4" r=".75">
-      <stop offset="0" stop-color="#fbf7ee"/><stop offset="1" stop-color="#ece3d2"/>
+    <radialGradient id="enamel" cx=".42" cy=".38" r=".8">
+      <stop offset="0" stop-color="#fdfaf3"/><stop offset=".7" stop-color="#f3ebdc"/><stop offset="1" stop-color="#e2d5bd"/>
     </radialGradient>
-    <clipPath id="lclip"><path d="${heartPath(0, 1, 26.5)}"/></clipPath>
-    <filter id="lInner"><feGaussianBlur stdDeviation="1.6"/></filter>
-    <filter id="lEmboss" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="b"/>
-      <feDiffuseLighting in="b" surfaceScale="4" diffuseConstant="1.2" result="d"><feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
-      <feSpecularLighting in="b" surfaceScale="4" specularConstant=".9" specularExponent="20" lighting-color="#fff4d8" result="s"><feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>
-      <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
-      <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
-      <feComposite in="lit" in2="s2" operator="arithmetic" k2="1" k3=".9"/>
-    </filter>
+    <linearGradient id="glare" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".45" stop-color="#fff" stop-opacity=".38"/>
+      <stop offset=".6" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="hinge" x1="0" x2="1">
+      <stop offset="0" stop-color="#7a5a24"/><stop offset=".3" stop-color="#f6e2b0"/>
+      <stop offset=".55" stop-color="#c9a466"/><stop offset="1" stop-color="#6d4f1f"/>
+    </linearGradient>
+    <radialGradient id="bead" cx=".35" cy=".3" r=".75">
+      <stop offset="0" stop-color="#fff6dc"/><stop offset=".35" stop-color="#e2c27e"/><stop offset="1" stop-color="#7a5a24"/>
+    </radialGradient>
+    <clipPath id="lclipL"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
+    <clipPath id="lclipR"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
+    <filter id="lInner" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2"/></filter>
     <filter id="lShadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4"/><feOffset dx="3" dy="5"/>
-      <feComponentTransfer><feFuncA type="linear" slope=".3"/></feComponentTransfer>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.2" result="c"/><feOffset in="c" dx="1" dy="2" result="c2"/>
+      <feComponentTransfer in="c2" result="c3"><feFuncA type="linear" slope=".45"/></feComponentTransfer>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3.5"/><feOffset dx="4" dy="7"/>
+      <feComponentTransfer result="s"><feFuncA type="linear" slope=".22"/></feComponentTransfer>
+      <feMerge><feMergeNode in="s"/><feMergeNode in="c3"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
   <g transform="translate(214 378) scale(1.12)" filter="url(#lShadow)">
-    <rect x="-4.5" y="-24" width="9" height="22" rx="4.5" fill="url(#lgold)" filter="url(#lEmboss)"/>
-    <path d="M-4.5 -18H4.5M-4.5 -11H4.5" stroke="#7d6130" stroke-opacity=".5" stroke-width=".7"/>
-    ${half(-35, -9, i1)}
-    ${half(35, 9, i2)}
-    <circle cx="0" cy="-33" r="6.5" fill="none" stroke="url(#lgold)" stroke-width="3" filter="url(#lEmboss)"/>
+    ${half(-35, -9, 'L')}
+    ${half(35, 9, 'R')}
+    ${knuckle(-23, 6)}${knuckle(-16.4, 6)}${knuckle(-9.8, 6)}
+    <path d="M-4.6 -16.7H4.6M-4.6 -10.1H4.6" stroke="#5b3f14" stroke-opacity=".6" stroke-width=".6"/>
+    ${metalRing(circleCurve(0, -32, 5.4), 2.8, 60, 7)}
   </g>`;
 }
+
+// The initials sit in their own live-text layer (the metalwork is rasterised).
+export const locketInitialsSVG = (i1, i2) => `
+  <g transform="translate(214 378) scale(1.12)">
+    <text transform="translate(-35 0) rotate(-9)" x="0" y="13" text-anchor="middle" class="locket-initial">${i1}</text>
+    <text transform="translate(35 0) rotate(9)" x="0" y="13" text-anchor="middle" class="locket-initial">${i2}</text>
+  </g>`;
 
 // ── Cupid engraving ────────────────────────────────────────────────────────
 // Two cherubs drawing their bows toward a heart, in fine engraved line work.
