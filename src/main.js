@@ -1,7 +1,7 @@
 import { WEDDING } from './config.js';
 import { BOOTH_VIEWBOX, frameSVG } from './art/booth.js';
 import { boothFloralsSVG, heroFloralsSVG } from './art/botanical.js';
-import { HERO_VIEWBOX, plateSVG, ribbonBackSVG, ribbonFrontSVG, locketSVG, locketInitialsSVG, cupidsSVG, waxSealSVG } from './art/hero.js';
+import { HERO_VIEWBOX, plateSVG, locketSVG, locketInitialsSVG, cupidsSVG, waxSealSVG } from './art/hero.js';
 import { PrinterSound } from './sound.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -24,7 +24,7 @@ const paint = (id, viewBox, markup) => {
 // The photoreal pieces are built from thousands of lit facets. Rasterising each into a
 // single image keeps the page light on phones; the browser still draws it at full sharpness.
 const paintImage = (id, viewBox, markup, overlay = '') => {
-  const P = 40; // bleed so shadows and ribbon ends aren't cropped at the layer edge
+  const P = 40; // bleed so shadows aren't cropped at the layer edge
   const [x, y, w, h] = viewBox.split(' ').map(Number);
   const box = [x - P, y - P, w + 2 * P, h + 2 * P];
   const doc = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${box.join(' ')}" width="${box[2] * 4}" height="${box[3] * 4}">${markup}</svg>`;
@@ -37,8 +37,6 @@ paint('boothFlorals', BOOTH_VIEWBOX, boothFloralsSVG());
 const paintHero = () => {
   paint('heroPlate', HERO_VIEWBOX, plateSVG());
   paint('heroFlorals', HERO_VIEWBOX, heroFloralsSVG());
-  paintImage('ribbonBack', HERO_VIEWBOX, ribbonBackSVG());
-  paintImage('ribbonFront', HERO_VIEWBOX, ribbonFrontSVG());
   paintImage('locket', HERO_VIEWBOX, locketSVG(), locketInitialsSVG(WEDDING.initial1, WEDDING.initial2));
 };
 (window.requestIdleCallback || ((f) => setTimeout(f, 200)))(paintHero, { timeout: 1500 });
@@ -183,26 +181,12 @@ Promise.race([
   print();
 });
 
-// ── Page 2: gentle reveals, ribbon parallax, countdown ─────────────────────
+// ── Page 2: gentle reveals, countdown ──────────────────────────────────────
 function startReveals() {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { rootMargin: '0px 0px -12% 0px' });
   document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
-}
-
-if (!reducedMotion) {
-  const ribbons = [$('#ribbonBack'), $('#ribbonFront')];
-  let ticking = false;
-  addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const y = Math.min(scrollY, 900) * -0.035;
-      ribbons.forEach((r) => { r.style.transform = `translateY(${y.toFixed(2)}px)`; });
-      ticking = false;
-    });
-  }, { passive: true });
 }
 
 const [wy, wm, wd] = WEDDING.weddingDate.split("-").map(Number);

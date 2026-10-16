@@ -1,6 +1,6 @@
 // Page 2 artwork. All layers share viewBox "0 0 400 460" so they stack precisely.
 
-import { PI, cubic, chain, ribbon, heartPath, tangentAt, pt, v3, smoothstep, rgb } from './geom.js';
+import { PI, cubic, chain, heartPath, tangentAt, pt, v3, smoothstep, rgb } from './geom.js';
 import { cornerOrnament, crestOrnament, orn, emboss } from './booth.js';
 
 export const HERO_VIEWBOX = '0 0 400 460';
@@ -68,26 +68,6 @@ export function plateSVG() {
     <g transform="translate(${cx} ${cy + H + arch - 2}) scale(.74 -.74)">${crest}</g>
   </g>`;
 }
-
-// ── Sage silk ribbon ───────────────────────────────────────────────────────
-// One continuous S-curve: enters behind the photo strip, sweeps down the page,
-// loops back and threads through the locket's bail.
-const ribbonPath = chain(
-  cubic([430, 118], [360, 132], [300, 150], [236, 196]),
-  cubic([236, 196], [176, 240], [112, 262], [128, 306]),
-  cubic([128, 306], [142, 344], [196, 318], [214, 334]),
-  cubic([214, 334], [236, 352], [290, 390], [330, 446]),
-);
-const silk = (from, to) => ribbon(ribbonPath, {
-  from, to, n: Math.round((to - from) * 260), w: 30,
-  twist: (t) => 1.25 * Math.sin(PI * t * 3.1 + 0.4) + 0.15,
-  wfn: (t) => (t > 0.72 && t < 0.78 ? 0.55 + 0.45 * Math.abs(t - 0.75) / 0.03 : 1),
-  base: [150, 164, 118], back: [132, 146, 104], amb: 0.62, dif: 0.45, spec: 0.42, shin: 8,
-  vcut: to === 1,
-});
-export const RIBBON_SPLIT = 0.2;
-export const ribbonBackSVG = () => `<g opacity=".78">${silk(0, RIBBON_SPLIT)}</g>`;
-export const ribbonFrontSVG = () => `<g opacity=".78">${silk(RIBBON_SPLIT, 1)}</g>`;
 
 // ── Heart locket ───────────────────────────────────────────────────────────
 // Polished champagne pewter: each rim is a rounded metal profile that reflects a soft
