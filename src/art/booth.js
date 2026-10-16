@@ -1,6 +1,6 @@
 // Page 1 artwork: the carved gold frame / photo booth.
 // Shared coordinate system: viewBox "0 -110 300 730". The frame occupies y 0–620,
-// the floral crest (botanical.js) lives in the 110 units above it.
+// the 110 units above it are headroom for the frame's crest and shadow.
 
 import { PI, cubic, spiral, taper, lineW, lerp, tangentAt } from './geom.js';
 
