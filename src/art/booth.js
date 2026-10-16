@@ -119,19 +119,19 @@ export function emboss(id, blur, scale, shadow) {
 const defs = `
 <defs>
   <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f1e9dc"/><stop offset=".3" stop-color="#cbbca4"/>
-    <stop offset=".55" stop-color="#e8decd"/><stop offset=".8" stop-color="#b3a389"/>
-    <stop offset="1" stop-color="#94846b"/>
+    <stop offset="0" stop-color="#efe0b0"/><stop offset=".3" stop-color="#c9ad6e"/>
+    <stop offset=".55" stop-color="#e6d29f"/><stop offset=".8" stop-color="#a98b55"/>
+    <stop offset="1" stop-color="#86703f"/>
   </linearGradient>
   <linearGradient id="goldDeep" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#d6c9b3"/><stop offset=".5" stop-color="#bba98d"/><stop offset="1" stop-color="#9a8a70"/>
+    <stop offset="0" stop-color="#d0b984"/><stop offset=".5" stop-color="#b39a63"/><stop offset="1" stop-color="#8f7848"/>
   </linearGradient>
   <linearGradient id="panel" x1="0" y1="0" x2=".35" y2="1">
-    <stop offset="0" stop-color="#b9c3a0"/><stop offset=".55" stop-color="#a3ae88"/><stop offset="1" stop-color="#8d9872"/>
+    <stop offset="0" stop-color="#e6d4a2"/><stop offset=".55" stop-color="#d8c28c"/><stop offset="1" stop-color="#c7ae76"/>
   </linearGradient>
   <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#efe7da"/><stop offset=".35" stop-color="#cbbda6"/>
-    <stop offset=".6" stop-color="#e6dccb"/><stop offset="1" stop-color="#ab9b80"/>
+    <stop offset="0" stop-color="#f0e2b6"/><stop offset=".35" stop-color="#c9ad70"/>
+    <stop offset=".6" stop-color="#e6d29f"/><stop offset="1" stop-color="#a68a55"/>
   </linearGradient>
   <linearGradient id="slot" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#000"/><stop offset=".6" stop-color="#1b1712"/><stop offset="1" stop-color="#3a3126"/>

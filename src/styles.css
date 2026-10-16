@@ -73,7 +73,7 @@ body > .paper { position: fixed; inset: 0; z-index: 0; }
 
 .booth-top { text-align: center; transition: transform 1.4s var(--ease-silk); }
 .booth-page.leaving .booth-top { transform: translateY(-14px); }
-.eyebrow { margin: 0; font-size: clamp(10px, min(2.9vw, 1.7dvh), 14px); letter-spacing: .2em; }
+.eyebrow { margin: 0; font-size: clamp(10px, min(2.9vw, 1.7dvh), 14px); letter-spacing: .2em; color: var(--ink); }
 .names {
   margin: .08em 0 0;
   font-size: clamp(38px, min(12vw, 8.4dvh), 84px);

@@ -70,9 +70,9 @@ export function plateSVG() {
 }
 
 // ── Heart locket ───────────────────────────────────────────────────────────
-// Polished champagne pewter: each rim is a rounded metal profile that reflects a soft
+// Polished antique gold, matching the plate: each rim is a rounded metal profile that reflects a soft
 // studio environment, so it reads as a real piece of jewellery.
-const GOLD = [228, 214, 190];
+const GOLD = [226, 200, 146];
 const KEY = v3.norm([-0.45, -0.6, 0.66]);
 const FILL = v3.norm([0.65, -0.15, 0.74]);
 function metal(n) {
@@ -134,10 +134,10 @@ const circleCurve = (cx, cy, r) => (t) => [cx + r * Math.cos(2 * PI * t), cy + r
 export function locketSVG() {
   const half = (x, rot, id) => `
     <g transform="translate(${x} 0) rotate(${rot})">
-      <path d="${heartPath(0.9, 2, 34.6)}" fill="#6a5a46"/>
+      <path d="${heartPath(0.9, 2, 34.6)}" fill="#7a6234"/>
       <path d="${heartPath(0, 1, 26.2)}" fill="url(#enamel)"/>
       <g clip-path="url(#lclip${id})">
-        <path d="${heartPath(0, 1, 26.2)}" fill="none" stroke="#4a3c2c" stroke-opacity=".5" stroke-width="5" filter="url(#lInner)" transform="translate(1.6 2.4)"/>
+        <path d="${heartPath(0, 1, 26.2)}" fill="none" stroke="#4d3a18" stroke-opacity=".5" stroke-width="5" filter="url(#lInner)" transform="translate(1.6 2.4)"/>
         <path d="M-30 -14L-6 -30L30 18L12 34Z" fill="url(#glare)"/>
       </g>
     </g>
@@ -155,11 +155,11 @@ export function locketSVG() {
       <stop offset=".6" stop-color="#fff" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="hinge" x1="0" x2="1">
-      <stop offset="0" stop-color="#75644d"/><stop offset=".3" stop-color="#f3ebde"/>
-      <stop offset=".55" stop-color="#bfae92"/><stop offset="1" stop-color="#6a5a46"/>
+      <stop offset="0" stop-color="#8a6f3c"/><stop offset=".3" stop-color="#f3e2b4"/>
+      <stop offset=".55" stop-color="#c9ad6e"/><stop offset="1" stop-color="#7a6234"/>
     </linearGradient>
     <radialGradient id="bead" cx=".35" cy=".3" r=".75">
-      <stop offset="0" stop-color="#fffaf0"/><stop offset=".35" stop-color="#d8c9b0"/><stop offset="1" stop-color="#75644d"/>
+      <stop offset="0" stop-color="#fff4d6"/><stop offset=".35" stop-color="#e0c78e"/><stop offset="1" stop-color="#8a6f3c"/>
     </radialGradient>
     <clipPath id="lclipL"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
     <clipPath id="lclipR"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
@@ -176,7 +176,7 @@ export function locketSVG() {
     ${half(-35, -9, 'L')}
     ${half(35, 9, 'R')}
     ${knuckle(-23, 6)}${knuckle(-16.4, 6)}${knuckle(-9.8, 6)}
-    <path d="M-4.6 -16.7H4.6M-4.6 -10.1H4.6" stroke="#4a3c2c" stroke-opacity=".6" stroke-width=".6"/>
+    <path d="M-4.6 -16.7H4.6M-4.6 -10.1H4.6" stroke="#4d3a18" stroke-opacity=".6" stroke-width=".6"/>
     ${metalRing(circleCurve(0, -32, 5.4), 2.8, 60, 7)}
   </g>`;
 }
