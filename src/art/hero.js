@@ -6,9 +6,9 @@ import { cornerOrnament, crestOrnament, orn, emboss } from './booth.js';
 export const HERO_VIEWBOX = '0 0 400 460';
 
 // ── Carved plate ──────────────────────────────────────────────────────────
-// A baroque cartouche in the same champagne pewter as the photo booth frame:
+// A baroque cartouche in soft antique gold, carved like the photo booth frame:
 // arched top and bottom, scooped corners, a shell crest above and below,
-// and a sage velvet panel inside for the Save the Date.
+// and a gold-leaf panel inside for the Save the Date.
 export const PLATE = { cx: 150, cy: 132, W: 112, H: 130, arch: 10, notch: 20 };
 
 // Outline of the cartouche, inset by d, centred on the plate.
@@ -29,17 +29,17 @@ export function plateSVG() {
   return `
   <defs>
     <linearGradient id="pGilt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f1e9dc"/><stop offset=".3" stop-color="#cbbca4"/>
-      <stop offset=".55" stop-color="#e8decd"/><stop offset=".8" stop-color="#b3a389"/>
-      <stop offset="1" stop-color="#94846b"/>
+      <stop offset="0" stop-color="#efe0b0"/><stop offset=".3" stop-color="#c9ad6e"/>
+      <stop offset=".55" stop-color="#e6d29f"/><stop offset=".8" stop-color="#a98b55"/>
+      <stop offset="1" stop-color="#86703f"/>
     </linearGradient>
     <linearGradient id="pBody" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#d6c9b3"/><stop offset=".5" stop-color="#bba98d"/><stop offset="1" stop-color="#9a8a70"/>
+      <stop offset="0" stop-color="#d0b984"/><stop offset=".5" stop-color="#b39a63"/><stop offset="1" stop-color="#8f7848"/>
     </linearGradient>
-    <!-- sage velvet: a soft diagonal sheen across the panel -->
+    <!-- gold leaf: a soft diagonal sheen across the panel -->
     <linearGradient id="pSatin" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#a8b38e"/><stop offset=".35" stop-color="#c0caa6"/>
-      <stop offset=".55" stop-color="#a5b08b"/><stop offset=".8" stop-color="#b4be99"/><stop offset="1" stop-color="#909b75"/>
+      <stop offset="0" stop-color="#d6bf88"/><stop offset=".35" stop-color="#ecdcae"/>
+      <stop offset=".55" stop-color="#d2ba82"/><stop offset=".8" stop-color="#e2cf9c"/><stop offset="1" stop-color="#bca26c"/>
     </linearGradient>
     <clipPath id="pPanelClip"><path d="${cartouche(17)}"/></clipPath>
     <filter id="pSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
