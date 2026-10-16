@@ -1,18 +1,19 @@
 :root {
-  --paper: #f4ebe1;
-  /* One rich burgundy for every piece of text, matching the countdown. */
-  --claret: #6b2231;
-  --ink: var(--claret);
-  --ink-soft: var(--claret);
-  --script: var(--claret);
-  --gold-ink: var(--claret);
-  --olive: #8f8753;
-  --olive-dark: #7b7445;
+  /* Deep chocolate stationery with cream lettering and champagne metalwork. */
+  --paper: #2a1a12;
+  --cream: #efe4d2;
+  --ink: var(--cream);
+  --ink-soft: #d9cbb4;
+  --script: var(--cream);
+  --gold-ink: #cdbd9f;
+  --champagne: #cdbd9f;
+  /* dark brown lettering for things printed on ivory (card, strip, locket) */
+  --espresso: #3b2518;
   --serif: 'Cormorant Garamond', 'Times New Roman', serif;
   --display: 'Playfair Display', 'Didot', 'Bodoni 72', serif;
   --calligraphy: 'Pinyon Script', 'Snell Roundhand', cursive;
   --ease-silk: cubic-bezier(.22, .61, .21, 1);
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -30,14 +31,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 img { display: block; }
 .script { font-family: var(--calligraphy); font-weight: 400; color: var(--script); }
 
-/* Ivory/blush stationery: soft light pooling, fine diagonal linen weave and paper grain. */
+/* Chocolate suede stationery: a soft pool of light, fine weave and grain. */
 .paper {
   background:
-    radial-gradient(120% 70% at 50% 28%, rgba(255, 252, 247, .75), rgba(255, 252, 247, 0) 62%),
-    radial-gradient(90% 60% at 50% 110%, rgba(226, 204, 196, .28), transparent 70%),
-    repeating-linear-gradient(135deg, rgba(135, 110, 88, .035) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(45deg, rgba(255, 255, 255, .25) 0 1px, transparent 1px 6px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .3 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 70% at 50% 30%, rgba(120, 82, 58, .32), rgba(120, 82, 58, 0) 65%),
+    radial-gradient(90% 60% at 50% 115%, rgba(0, 0, 0, .35), transparent 70%),
+    repeating-linear-gradient(135deg, rgba(255, 235, 210, .018) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, .06) 0 1px, transparent 1px 6px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .75 0 0 0 0 .62 0 0 0 0 .5 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
     var(--paper);
 }
 body > .paper { position: fixed; inset: 0; z-index: 0; }
@@ -87,7 +88,7 @@ body > .paper { position: fixed; inset: 0; z-index: 0; }
   margin-top: calc(min(62dvh, 136vw) * -0.02);
 }
 .booth-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.booth-frame { filter: drop-shadow(0 10px 14px rgba(70, 50, 20, .22)) drop-shadow(0 2px 3px rgba(70, 50, 20, .25)); }
+.booth-frame { filter: drop-shadow(0 12px 18px rgba(0, 0, 0, .45)) drop-shadow(0 2px 3px rgba(0, 0, 0, .4)); }
 .booth-florals { pointer-events: none; }
 
 /* The printer comes to life: indicator jewel warms up, plate hums. */
@@ -140,31 +141,16 @@ body > .paper { position: fixed; inset: 0; z-index: 0; }
   height: 100%;
   position: relative;
   padding: 6.25% 6.25% 0;
-  /* Aged ivory card: warm toning that deepens towards the edges, with a little foxing. */
-  background:
-    radial-gradient(60% 8% at 30% 99%, rgba(170, 130, 70, .14), transparent),
-    radial-gradient(40% 5% at 80% 1%, rgba(170, 130, 70, .12), transparent),
-    linear-gradient(90deg, rgba(120, 90, 40, .1), transparent 9%, transparent 91%, rgba(120, 90, 40, .1)),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .4 0 0 0 0 .25 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"),
-    linear-gradient(#f8f1e2, #efe3cb);
-  box-shadow: 0 1px 1.5px rgba(40, 30, 15, .28), 0 6px 14px -2px rgba(60, 45, 20, .25);
-}
-/* A fine gold-foil hairline pressed into the card. */
-.strip-paper::after {
-  content: '';
-  position: absolute;
-  inset: 3cqw;
-  border: 1px solid rgba(176, 140, 74, .55);
-  pointer-events: none;
+  /* Crisp white photo booth paper. */
+  background: linear-gradient(#fdfcf9, #f6f3ed);
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, .3), 0 6px 14px -2px rgba(0, 0, 0, .3);
 }
 .strip-paper img + img { margin-top: 4.7%; }
 .strip-paper img {
   width: 100%;
   aspect-ratio: 112 / 96;
   object-fit: cover;
-  /* Soft sepia silver print, like an old photo booth strip. */
-  filter: grayscale(1) sepia(.38) contrast(1.04) brightness(1.03) saturate(.9);
-  box-shadow: inset 0 0 0 1px rgba(60, 40, 10, .1);
+  filter: grayscale(1) contrast(1.06) brightness(1.02);
 }
 .strip-caption {
   flex: 1;
@@ -173,9 +159,10 @@ body > .paper { position: fixed; inset: 0; z-index: 0; }
   justify-content: center;
   font-size: 9.6cqw;
   line-height: 1;
-  color: var(--claret);
+  color: var(--ink);
   white-space: nowrap;
   padding-bottom: 1cqw;
+  color: var(--espresso);
 }
 .booth.done .strip, .booth.done .booth-frame { cursor: pointer; }
 
@@ -264,7 +251,7 @@ body.entering .site, body.entered .site { visibility: visible; }
   font-weight: 400;
   font-size: 7.2cqw;
   letter-spacing: .06em;
-  color: var(--claret);
+  color: var(--ink);
 }
 .h-strip {
   position: absolute;
@@ -274,14 +261,9 @@ body.entering .site, body.entered .site { visibility: visible; }
 }
 /* A crisp white photo booth strip in classic black & white, sealed at the top with wax. */
 .strip--hero { position: relative; left: auto; margin: 0; width: 100%; transform: none; aspect-ratio: 90 / 238; }
-.strip--hero .strip-paper {
-  padding: 6.5% 6.5% 0;
-  background: linear-gradient(#fdfcf9, #f8f6f1);
-  box-shadow: 0 1px 2px rgba(40, 30, 15, .16), 0 12px 22px -6px rgba(50, 40, 25, .3);
-}
-.strip--hero .strip-paper::after { content: none; }
+.strip--hero .strip-paper { padding: 6.5% 6.5% 0; box-shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 22px -6px rgba(0, 0, 0, .45); }
 .strip--hero .strip-paper img + img { margin-top: 5%; }
-.strip--hero .strip-paper img { aspect-ratio: 76 / 66; filter: grayscale(1) contrast(1.06) brightness(1.02); box-shadow: none; }
+.strip--hero .strip-paper img { aspect-ratio: 76 / 66; }
 .wax-seal {
   position: absolute;
   z-index: 2;
@@ -293,7 +275,7 @@ body.entering .site, body.entered .site { visibility: visible; }
   filter: drop-shadow(0 2px 2px rgba(60, 45, 20, .3)) drop-shadow(0 5px 8px rgba(60, 45, 20, .18));
 }
 .wax-seal .seal-initials { font-family: var(--calligraphy); font-size: 27px; }
-.locket-initial { font-family: var(--calligraphy); font-size: 30px; fill: var(--claret); }
+.locket-initial { font-family: var(--calligraphy); font-size: 30px; fill: var(--espresso); }
 
 /* Entrance choreography once the guest taps in. */
 .hero > * { opacity: 0; }
@@ -325,10 +307,10 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   font-size: clamp(40px, 12vw, 72px);
   line-height: 1;
   letter-spacing: -.01em;
-  color: var(--claret);
+  color: var(--ink);
   font-variant-numeric: lining-nums tabular-nums;
 }
-.cd-sep { font-family: var(--display); font-size: clamp(34px, 10vw, 60px); line-height: 1; color: var(--claret); margin: 0 clamp(2px, 1.2vw, 10px); }
+.cd-sep { font-family: var(--display); font-size: clamp(34px, 10vw, 60px); line-height: 1; color: var(--ink); margin: 0 clamp(2px, 1.2vw, 10px); }
 .cd-label {
   font-weight: 500;
   font-size: clamp(10px, 3vw, 13px);
@@ -365,7 +347,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   border-radius: 4cqw;
   filter: grayscale(1) contrast(1.08) brightness(1.03);
 }
-.pc-index { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 1.5cqw; color: var(--claret); }
+.pc-index { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 1.5cqw; color: var(--espresso); }
 .pc-index--top { left: 5.5%; top: 4.5%; }
 .pc-index--bottom { right: 5.5%; bottom: 4.5%; transform: rotate(180deg); }
 .pc-rank { font-family: var(--display); font-size: 13cqw; line-height: .8; }
@@ -379,6 +361,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   line-height: .95;
   text-align: right;
   transform: rotate(-7deg);
+  color: var(--espresso);
   text-shadow: 0 0 6px #f8f2e6, 0 0 2px #f8f2e6;
 }
 .pc-script span { display: block; padding-right: 3cqw; }
@@ -387,7 +370,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   display: block;
   width: min(78%, 360px);
   margin: clamp(64px, 12vh, 110px) auto 0;
-  color: #8b8173;
+  color: var(--champagne);
 }
 
 .continue {
@@ -416,7 +399,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   font-family: var(--display);
   font-size: clamp(14px, 4vw, 17px);
   line-height: 1.55;
-  color: var(--claret);
+  color: var(--ink);
 }
 .details-form { margin: clamp(48px, 9vh, 72px) auto 0; max-width: 460px; text-align: left; }
 .hp { position: absolute; left: -9999px; }
@@ -427,7 +410,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   font-family: var(--display);
   font-size: 14px;
   line-height: 1.45;
-  color: var(--claret);
+  color: var(--ink);
 }
 .field textarea {
   display: block;
@@ -436,29 +419,31 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   min-height: 58px;
   padding: 12px 14px;
   font: 17px/1.45 var(--serif);
-  color: var(--claret);
-  background: rgba(255, 253, 249, .45);
-  border: 1px solid rgba(125, 110, 90, .32);
-  border-radius: 4px;
-  box-shadow: inset 0 1px 2px rgba(80, 60, 40, .05);
+  color: var(--ink);
+  background: rgba(255, 240, 220, .04);
+  border: 1px solid rgba(239, 228, 210, .3);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .2);
   transition: border-color .3s, background .3s;
 }
-.field textarea:focus { outline: none; border-color: rgba(143, 135, 83, .8); background: rgba(255, 253, 249, .8); }
+.field textarea:focus { outline: none; border-color: rgba(239, 228, 210, .75); background: rgba(255, 240, 220, .08); }
 .submit {
   display: block;
   width: 100%;
   margin-top: 8px;
   padding: 14px 20px;
-  border-radius: 999px;
-  background: var(--olive);
-  color: #fbf8ef;
-  font-family: var(--display);
-  font-size: 16px;
-  letter-spacing: .02em;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, .25) inset, 0 6px 16px -8px rgba(80, 70, 30, .6);
+  border: 1px solid var(--cream);
+  border-radius: 0;
+  background: transparent;
+  color: var(--cream);
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
   transition: background .3s, transform .2s;
 }
-.submit:hover { background: var(--olive-dark); }
+.submit:hover { background: rgba(239, 228, 210, .1); }
 .submit:active { transform: translateY(1px); }
 .submit:disabled { opacity: .7; cursor: default; }
 .form-status { min-height: 1.4em; margin: 14px 0 0; text-align: center; font-size: 15px; font-style: italic; color: var(--ink-soft); }

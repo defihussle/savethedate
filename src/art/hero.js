@@ -4,26 +4,26 @@ import { PI, cubic, chain, ribbon, heartPath, tangentAt, pt, v3, smoothstep, rgb
 
 export const HERO_VIEWBOX = '0 0 400 460';
 
-// Antique gilt oval, in the same aged gold and carved lighting as the photo booth frame.
+// Champagne-pewter oval, in the same metal and carved lighting as the photo booth frame.
 export function ovalSVG() {
   return `
   <defs>
     <linearGradient id="ovalGilt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#e9d39a"/><stop offset=".28" stop-color="#c9a660"/>
-      <stop offset=".5" stop-color="#e3c88a"/><stop offset=".76" stop-color="#b08c4a"/>
-      <stop offset="1" stop-color="#94733a"/>
+      <stop offset="0" stop-color="#f1e9dc"/><stop offset=".28" stop-color="#cbbca4"/>
+      <stop offset=".5" stop-color="#e8decd"/><stop offset=".76" stop-color="#b3a389"/>
+      <stop offset="1" stop-color="#94846b"/>
     </linearGradient>
     <filter id="ovalGild" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
       <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="b"/>
       <feDiffuseLighting in="b" surfaceScale="4" diffuseConstant="1.18" lighting-color="#fff" result="d">
         <feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
-      <feSpecularLighting in="b" surfaceScale="4" specularConstant=".7" specularExponent="16" lighting-color="#fff0c8" result="s">
+      <feSpecularLighting in="b" surfaceScale="4" specularConstant=".7" specularExponent="16" lighting-color="#fff6ea" result="s">
         <feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>
       <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
       <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
       <feComposite in="lit" in2="s2" operator="arithmetic" k2="1" k3=".8" result="out"/>
       <feGaussianBlur in="SourceAlpha" stdDeviation="2.4"/><feOffset dx="2" dy="4" result="o"/>
-      <feFlood flood-color="#3b2a0c" flood-opacity=".35"/><feComposite in2="o" operator="in" result="sh"/>
+      <feFlood flood-color="#120a05" flood-opacity=".55"/><feComposite in2="o" operator="in" result="sh"/>
       <feMerge><feMergeNode in="sh"/><feMergeNode in="out"/></feMerge>
     </filter>
   </defs>
@@ -55,9 +55,9 @@ export const ribbonBackSVG = () => `<g opacity=".78">${silk(0, RIBBON_SPLIT)}</g
 export const ribbonFrontSVG = () => `<g opacity=".78">${silk(RIBBON_SPLIT, 1)}</g>`;
 
 // ── Heart locket ───────────────────────────────────────────────────────────
-// Polished champagne gold: each rim is a rounded metal profile that reflects a soft
+// Polished champagne pewter: each rim is a rounded metal profile that reflects a soft
 // studio environment, so it reads as a real piece of jewellery.
-const GOLD = [236, 200, 132];
+const GOLD = [228, 214, 190];
 const KEY = v3.norm([-0.45, -0.6, 0.66]);
 const FILL = v3.norm([0.65, -0.15, 0.74]);
 function metal(n) {
@@ -119,10 +119,10 @@ const circleCurve = (cx, cy, r) => (t) => [cx + r * Math.cos(2 * PI * t), cy + r
 export function locketSVG() {
   const half = (x, rot, id) => `
     <g transform="translate(${x} 0) rotate(${rot})">
-      <path d="${heartPath(0.9, 2, 34.6)}" fill="#6d4f1f"/>
+      <path d="${heartPath(0.9, 2, 34.6)}" fill="#6a5a46"/>
       <path d="${heartPath(0, 1, 26.2)}" fill="url(#enamel)"/>
       <g clip-path="url(#lclip${id})">
-        <path d="${heartPath(0, 1, 26.2)}" fill="none" stroke="#5b3f14" stroke-opacity=".5" stroke-width="5" filter="url(#lInner)" transform="translate(1.6 2.4)"/>
+        <path d="${heartPath(0, 1, 26.2)}" fill="none" stroke="#4a3c2c" stroke-opacity=".5" stroke-width="5" filter="url(#lInner)" transform="translate(1.6 2.4)"/>
         <path d="M-30 -14L-6 -30L30 18L12 34Z" fill="url(#glare)"/>
       </g>
     </g>
@@ -140,11 +140,11 @@ export function locketSVG() {
       <stop offset=".6" stop-color="#fff" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="hinge" x1="0" x2="1">
-      <stop offset="0" stop-color="#7a5a24"/><stop offset=".3" stop-color="#f6e2b0"/>
-      <stop offset=".55" stop-color="#c9a466"/><stop offset="1" stop-color="#6d4f1f"/>
+      <stop offset="0" stop-color="#75644d"/><stop offset=".3" stop-color="#f3ebde"/>
+      <stop offset=".55" stop-color="#bfae92"/><stop offset="1" stop-color="#6a5a46"/>
     </linearGradient>
     <radialGradient id="bead" cx=".35" cy=".3" r=".75">
-      <stop offset="0" stop-color="#fff6dc"/><stop offset=".35" stop-color="#e2c27e"/><stop offset="1" stop-color="#7a5a24"/>
+      <stop offset="0" stop-color="#fffaf0"/><stop offset=".35" stop-color="#d8c9b0"/><stop offset="1" stop-color="#75644d"/>
     </radialGradient>
     <clipPath id="lclipL"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
     <clipPath id="lclipR"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
@@ -161,7 +161,7 @@ export function locketSVG() {
     ${half(-35, -9, 'L')}
     ${half(35, 9, 'R')}
     ${knuckle(-23, 6)}${knuckle(-16.4, 6)}${knuckle(-9.8, 6)}
-    <path d="M-4.6 -16.7H4.6M-4.6 -10.1H4.6" stroke="#5b3f14" stroke-opacity=".6" stroke-width=".6"/>
+    <path d="M-4.6 -16.7H4.6M-4.6 -10.1H4.6" stroke="#4a3c2c" stroke-opacity=".6" stroke-width=".6"/>
     ${metalRing(circleCurve(0, -32, 5.4), 2.8, 60, 7)}
   </g>`;
 }

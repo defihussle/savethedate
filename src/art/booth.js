@@ -102,7 +102,7 @@ function emboss(id, blur, scale, shadow) {
     <feGaussianBlur in="SourceAlpha" stdDeviation="${blur}" result="b"/>
     <feDiffuseLighting in="b" surfaceScale="${scale}" diffuseConstant="1.22" lighting-color="#fff" result="d">
       <feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
-    <feSpecularLighting in="b" surfaceScale="${scale}" specularConstant=".85" specularExponent="18" lighting-color="#fff2cf" result="s">
+    <feSpecularLighting in="b" surfaceScale="${scale}" specularConstant=".85" specularExponent="18" lighting-color="#fff6ea" result="s">
       <feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>
     <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
     <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
@@ -110,7 +110,7 @@ function emboss(id, blur, scale, shadow) {
     ${shadow ? `
     <feGaussianBlur in="SourceAlpha" stdDeviation="${shadow}"/>
     <feOffset dx="${shadow * 0.7}" dy="${shadow * 1.1}" result="o"/>
-    <feFlood flood-color="#3b2a0c" flood-opacity=".55"/>
+    <feFlood flood-color="#1e140c" flood-opacity=".6"/>
     <feComposite in2="o" operator="in" result="sh"/>
     <feMerge><feMergeNode in="sh"/><feMergeNode in="out"/></feMerge>` : ''}
   </filter>`;
@@ -119,19 +119,19 @@ function emboss(id, blur, scale, shadow) {
 const defs = `
 <defs>
   <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f3e1a8"/><stop offset=".3" stop-color="#d9bb74"/>
-    <stop offset=".55" stop-color="#efd9a0"/><stop offset=".8" stop-color="#c9a660"/>
-    <stop offset="1" stop-color="#b08c4a"/>
+    <stop offset="0" stop-color="#f1e9dc"/><stop offset=".3" stop-color="#cbbca4"/>
+    <stop offset=".55" stop-color="#e8decd"/><stop offset=".8" stop-color="#b3a389"/>
+    <stop offset="1" stop-color="#94846b"/>
   </linearGradient>
   <linearGradient id="goldDeep" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#d8bb78"/><stop offset=".5" stop-color="#c3a15c"/><stop offset="1" stop-color="#a5823f"/>
+    <stop offset="0" stop-color="#d6c9b3"/><stop offset=".5" stop-color="#bba98d"/><stop offset="1" stop-color="#9a8a70"/>
   </linearGradient>
   <linearGradient id="panel" x1="0" y1="0" x2=".35" y2="1">
-    <stop offset="0" stop-color="#eee2c6"/><stop offset=".55" stop-color="#e7d8b6"/><stop offset="1" stop-color="#ddcba5"/>
+    <stop offset="0" stop-color="#ddd1bf"/><stop offset=".55" stop-color="#cfc1aa"/><stop offset="1" stop-color="#bfb097"/>
   </linearGradient>
   <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#f1e5c4"/><stop offset=".35" stop-color="#d7c28f"/>
-    <stop offset=".6" stop-color="#efe1bb"/><stop offset="1" stop-color="#bfa56d"/>
+    <stop offset="0" stop-color="#efe7da"/><stop offset=".35" stop-color="#cbbda6"/>
+    <stop offset=".6" stop-color="#e6dccb"/><stop offset="1" stop-color="#ab9b80"/>
   </linearGradient>
   <linearGradient id="slot" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#000"/><stop offset=".6" stop-color="#1b1712"/><stop offset="1" stop-color="#3a3126"/>
@@ -163,10 +163,10 @@ export function frameSVG() {
   </g>
   <rect x="46" y="64" width="208" height="504" rx="3" fill="url(#panel)"/>
   <g clip-path="url(#panelClip)">
-    <rect x="46" y="64" width="208" height="504" rx="3" fill="none" stroke="#4a3610" stroke-width="16"
+    <rect x="46" y="64" width="208" height="504" rx="3" fill="none" stroke="#3a2c1c" stroke-width="16"
       opacity=".32" filter="url(#soft)" transform="translate(3 4)"/>
   </g>
-  <rect x="46.5" y="64.5" width="207" height="503" rx="3" fill="none" stroke="#6b5226" stroke-opacity=".45"/>
+  <rect x="46.5" y="64.5" width="207" height="503" rx="3" fill="none" stroke="#5e4f3c" stroke-opacity=".45"/>
   <g id="plate" class="plate">
     <g filter="url(#embossPlate)">
       <rect x="62" y="95" width="176" height="36" rx="3" fill="url(#plate)"/>

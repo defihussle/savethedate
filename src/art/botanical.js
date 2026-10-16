@@ -1,13 +1,14 @@
 // Hand-drawn botanical sprigs in the same engraved line style as the cupids:
-// fine ink outlines with a soft watercolour wash, olive foliage and blush blossoms.
+// fine ink outlines over ivory paper blossoms and soft sage foliage.
 
 import { PI, cubic, pt, tangentAt } from './geom.js';
 
-const LEAF_INK = '#6f6a3e';
-const LEAF_WASH = '#b7b58a';
-const PETAL_INK = '#6b2231';
-const PETAL_WASH = '#ecd0cb';
-const HEART_WASH = '#c9a35e';
+const LEAF_INK = '#4e4a30';
+const LEAF_WASH = '#a9a77f';
+const STEM = '#a9a47c';
+const PETAL_INK = '#5a4232';
+const PETAL_WASH = '#f1e8da';
+const HEART_WASH = '#c8b48c';
 
 const deg = (r) => (r * 180) / PI;
 // Small deterministic jitter so repeated leaves and petals don't look stamped.
@@ -17,7 +18,7 @@ const jitter = (seed) => { let s = seed; return () => ((s = (s * 9301 + 49297) %
 function leaf(L, W) {
   return `
   <path d="M0 0C${pt([L * 0.28, -W])} ${pt([L * 0.72, -W * 0.85])} ${pt([L, 0])}C${pt([L * 0.72, W * 0.85])} ${pt([L * 0.28, W])} 0 0Z"
-    fill="${LEAF_WASH}" fill-opacity=".38" stroke="${LEAF_INK}" stroke-width=".7"/>
+    fill="${LEAF_WASH}" fill-opacity=".92" stroke="${LEAF_INK}" stroke-width=".7"/>
   <path d="M${pt([L * 0.04, 0])}Q${pt([L * 0.5, W * 0.12])} ${pt([L * 0.9, 0])}" fill="none" stroke="${LEAF_INK}" stroke-width=".45"/>
   <path d="M${pt([L * 0.3, W * 0.05])}l${pt([L * 0.14, -W * 0.55])}M${pt([L * 0.52, W * 0.06])}l${pt([L * 0.12, -W * 0.5])}M${pt([L * 0.4, W * 0.06])}l${pt([L * 0.12, W * 0.48])}M${pt([L * 0.62, W * 0.05])}l${pt([L * 0.1, W * 0.42])}"
     fill="none" stroke="${LEAF_INK}" stroke-width=".3" stroke-linecap="round"/>`;
@@ -32,7 +33,7 @@ function blossom(r, seed = 1) {
     const R = r * (1 + j() * 0.12);
     petals += `<g transform="rotate(${a.toFixed(1)})">
       <path d="M0 0C${pt([R * 0.25, -R * 0.62])} ${pt([R * 0.95, -R * 0.72])} ${pt([R * 1.02, -R * 0.12])}Q${pt([R * 0.92, 0])} ${pt([R * 1.02, R * 0.12])}C${pt([R * 0.95, R * 0.72])} ${pt([R * 0.25, R * 0.62])} 0 0Z"
-        fill="${PETAL_WASH}" fill-opacity=".85" stroke="${PETAL_INK}" stroke-width=".6"/>
+        fill="${PETAL_WASH}" fill-opacity=".97" stroke="${PETAL_INK}" stroke-width=".6"/>
       <path d="M${pt([R * 0.3, 0])}Q${pt([R * 0.55, R * 0.04])} ${pt([R * 0.72, -R * 0.02])}" fill="none" stroke="${PETAL_INK}" stroke-width=".3" stroke-opacity=".7"/>
     </g>`;
   }
@@ -51,7 +52,7 @@ function blossom(r, seed = 1) {
 function bud(r) {
   return `
   <path d="M0 0C${pt([r * 0.4, -r * 0.7])} ${pt([r * 1.5, -r * 0.6])} ${pt([r * 1.8, 0])}C${pt([r * 1.5, r * 0.6])} ${pt([r * 0.4, r * 0.7])} 0 0Z"
-    fill="${PETAL_WASH}" fill-opacity=".85" stroke="${PETAL_INK}" stroke-width=".6"/>
+    fill="${PETAL_WASH}" fill-opacity=".97" stroke="${PETAL_INK}" stroke-width=".6"/>
   <path d="M${pt([r * 0.5, 0])}Q${pt([r * 1.1, -r * 0.1])} ${pt([r * 1.7, 0])}" fill="none" stroke="${PETAL_INK}" stroke-width=".3"/>
   <path d="M0 0Q${pt([r * 0.5, -r * 0.6])} ${pt([r * 0.8, -r * 0.35])}M0 0Q${pt([r * 0.5, r * 0.6])} ${pt([r * 0.8, r * 0.35])}"
     fill="${LEAF_WASH}" fill-opacity=".5" stroke="${LEAF_INK}" stroke-width=".55"/>`;
@@ -68,7 +69,7 @@ export function sprig(curve, { leaves = 8, leafL = 22, flowers = [], berries = [
   const j = jitter(seed);
   let stemD = `M${pt(curve(0))}`;
   for (let i = 1; i <= 40; i++) stemD += `L${pt(curve(i / 40))}`;
-  let out = `<path d="${stemD}" fill="none" stroke="${LEAF_INK}" stroke-width="1" stroke-linecap="round"/>`;
+  let out = `<path d="${stemD}" fill="none" stroke="${STEM}" stroke-width="1" stroke-linecap="round"/>`;
 
   for (let i = 0; i < leaves; i++) {
     const t = skip + (i / leaves) * (0.94 - skip);
@@ -85,7 +86,7 @@ export function sprig(curve, { leaves = 8, leafL = 22, flowers = [], berries = [
     const a = Math.atan2(ty, tx) + side * 0.95;
     const L = size * 1.6;
     const q = [p[0] + Math.cos(a) * L, p[1] + Math.sin(a) * L];
-    out += `<path d="M${pt(p)}Q${pt([p[0] + Math.cos(a - side * 0.4) * L * 0.6, p[1] + Math.sin(a - side * 0.4) * L * 0.6])} ${pt(q)}" fill="none" stroke="${LEAF_INK}" stroke-width=".7"/>`;
+    out += `<path d="M${pt(p)}Q${pt([p[0] + Math.cos(a - side * 0.4) * L * 0.6, p[1] + Math.sin(a - side * 0.4) * L * 0.6])} ${pt(q)}" fill="none" stroke="${STEM}" stroke-width=".7"/>`;
     out += at(q, j() * 40, blossom(size, Math.round(t * 100) + seed));
   }
 
@@ -96,7 +97,7 @@ export function sprig(curve, { leaves = 8, leafL = 22, flowers = [], berries = [
       const a = Math.atan2(ty, tx) + side * (0.5 + k * 0.45);
       const L = r * (3 + k * 0.6);
       const q = [p[0] + Math.cos(a) * L, p[1] + Math.sin(a) * L];
-      out += `<path d="M${pt(p)}L${pt(q)}" stroke="${LEAF_INK}" stroke-width=".45"/>` + at(q, 0, berry(r));
+      out += `<path d="M${pt(p)}L${pt(q)}" stroke="${STEM}" stroke-width=".45"/>` + at(q, 0, berry(r));
     }
   }
 
