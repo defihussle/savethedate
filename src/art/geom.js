@@ -126,7 +126,7 @@ export function ribbon(curve, o) {
   return `<g stroke-width=".45" stroke-linejoin="round">${out}</g>`;
 }
 
-// ── Lit 3D meshes (lily petals, locket metal) ──────────────────────────────
+// ── Lit 3D meshes (locket metal) ──────────────────────────────
 export const v3 = {
   sub: (a, b) => [a[0] - b[0], a[1] - b[1], a[2] - b[2]],
   cross: (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]],

@@ -88,8 +88,7 @@ body > .paper { position: fixed; inset: 0; z-index: 0; }
 }
 .booth-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .booth-frame { filter: drop-shadow(0 10px 14px rgba(70, 50, 20, .22)) drop-shadow(0 2px 3px rgba(70, 50, 20, .25)); }
-.booth-bow { filter: drop-shadow(0 3px 3px rgba(90, 75, 50, .22)); pointer-events: none; }
-#boothTails { filter: drop-shadow(0 2px 2px rgba(90, 75, 50, .2)); }
+.booth-florals { pointer-events: none; }
 
 /* The printer comes to life: indicator jewel warms up, plate hums. */
 .booth .lamp { opacity: 0; transition: opacity .6s ease; }
@@ -232,7 +231,8 @@ body.entering .site, body.entered .site { visibility: visible; }
   position: relative;
   container-type: inline-size;
   aspect-ratio: 400 / 460;
-  margin: max(env(safe-area-inset-top), 12px) -16px 0;
+  /* extra headroom: the gilt oval rises ~9% of the width above the artwork box */
+  margin: calc(max(env(safe-area-inset-top), 12px) + min(9vw, 52px)) -16px 0;
   overflow-x: clip;
 }
 .h-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
@@ -272,7 +272,6 @@ body.entered .hero .h-oval { animation-delay: .1s; }
 body.entered .hero .h-text { animation-delay: .35s; }
 body.entered .hero .h-ribbon-back, body.entered .hero .h-ribbon-front { animation-name: fade; animation-duration: 2.2s; animation-delay: .9s; }
 body.entered .hero .h-strip { animation: settle 1.9s var(--ease-silk) .5s both; }
-body.entered .hero .h-lilies { animation-delay: .7s; }
 body.entered .hero .h-locket { animation-delay: 1.1s; }
 @keyframes rise { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }

@@ -1,6 +1,7 @@
 import { WEDDING } from './config.js';
-import { BOOTH_VIEWBOX, frameSVG, bowSVG, bowTailsSVG } from './art/booth.js';
-import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, liliesSVG, locketSVG, locketInitialsSVG, cupidsSVG } from './art/hero.js';
+import { BOOTH_VIEWBOX, frameSVG } from './art/booth.js';
+import { boothFloralsSVG } from './art/botanical.js';
+import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, locketSVG, locketInitialsSVG, cupidsSVG } from './art/hero.js';
 import { PrinterSound } from './sound.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -30,14 +31,12 @@ const paintImage = (id, viewBox, markup, overlay = '') => {
   const url = URL.createObjectURL(new Blob([doc], { type: 'image/svg+xml' }));
   paint(id, viewBox, `<image href="${url}" x="${box[0]}" y="${box[1]}" width="${box[2]}" height="${box[3]}"/>${overlay}`);
 };
-paintImage('boothTails', BOOTH_VIEWBOX, bowTailsSVG());
 paint('boothFrame', BOOTH_VIEWBOX, frameSVG());
-paintImage('boothBow', BOOTH_VIEWBOX, bowSVG());
+paint('boothFlorals', BOOTH_VIEWBOX, boothFloralsSVG());
 // Page 2 art is built after the booth starts, so the entrance appears instantly.
 const paintHero = () => {
   paint('heroOval', HERO_VIEWBOX, ovalSVG());
   paintImage('ribbonBack', HERO_VIEWBOX, ribbonBackSVG());
-  paintImage('lilies', HERO_VIEWBOX, liliesSVG());
   paintImage('ribbonFront', HERO_VIEWBOX, ribbonFrontSVG());
   paintImage('locket', HERO_VIEWBOX, locketSVG(), locketInitialsSVG(WEDDING.initial1, WEDDING.initial2));
 };

@@ -1,31 +1,42 @@
 // Page 2 artwork. All layers share viewBox "0 0 400 460" so they stack precisely.
 
-import { PI, cubic, chain, taper, lineW, ribbon, heartPath, tangentAt, pt, v3, smoothstep, rgb } from './geom.js';
-import { callaBloom } from './calla.js';
+import { PI, cubic, chain, ribbon, heartPath, tangentAt, pt, v3, smoothstep, rgb } from './geom.js';
 
 export const HERO_VIEWBOX = '0 0 400 460';
 
+// Antique gilt oval, in the same aged gold and carved lighting as the photo booth frame.
 export function ovalSVG() {
   return `
   <defs>
-    <filter id="ovalEmboss" x="-10%" y="-10%" width="120%" height="120%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="b"/>
-      <feOffset in="b" dx="3" dy="5" result="o"/>
-      <feFlood flood-color="#8a7456" flood-opacity=".22"/><feComposite in2="o" operator="in" result="sh"/>
-      <feOffset in="b" dx="-2" dy="-3" result="o2"/>
-      <feFlood flood-color="#fff" flood-opacity=".9"/><feComposite in2="o2" operator="in" result="hi"/>
-      <feMerge><feMergeNode in="sh"/><feMergeNode in="hi"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <linearGradient id="ovalGilt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e9d39a"/><stop offset=".28" stop-color="#c9a660"/>
+      <stop offset=".5" stop-color="#e3c88a"/><stop offset=".76" stop-color="#b08c4a"/>
+      <stop offset="1" stop-color="#94733a"/>
+    </linearGradient>
+    <filter id="ovalGild" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="b"/>
+      <feDiffuseLighting in="b" surfaceScale="4" diffuseConstant="1.18" lighting-color="#fff" result="d">
+        <feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
+      <feSpecularLighting in="b" surfaceScale="4" specularConstant=".7" specularExponent="16" lighting-color="#fff0c8" result="s">
+        <feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>
+      <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
+      <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
+      <feComposite in="lit" in2="s2" operator="arithmetic" k2="1" k3=".8" result="out"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4"/><feOffset dx="2" dy="4" result="o"/>
+      <feFlood flood-color="#3b2a0c" flood-opacity=".35"/><feComposite in2="o" operator="in" result="sh"/>
+      <feMerge><feMergeNode in="sh"/><feMergeNode in="out"/></feMerge>
     </filter>
   </defs>
-  <g filter="url(#ovalEmboss)" fill="none">
-    <ellipse cx="150" cy="118" rx="122" ry="150" stroke="#f7f1e8" stroke-width="15"/>
-    <ellipse cx="150" cy="118" rx="108" ry="136" stroke="#f5eee4" stroke-width="3"/>
+  <g filter="url(#ovalGild)" fill="none" stroke="url(#ovalGilt)">
+    <ellipse cx="150" cy="118" rx="124" ry="152" stroke-width="9"/>
+    <ellipse cx="150" cy="118" rx="115.5" ry="143.5" stroke-width="3.2" stroke-dasharray="0 6.4" stroke-linecap="round"/>
+    <ellipse cx="150" cy="118" rx="108" ry="136" stroke-width="3"/>
   </g>`;
 }
 
 // ── Sage silk ribbon ───────────────────────────────────────────────────────
-// One continuous S-curve: enters behind the photo strip, sweeps across the lily
-// stems, loops back and threads through the locket's bail.
+// One continuous S-curve: enters behind the photo strip, sweeps down the page,
+// loops back and threads through the locket's bail.
 const ribbonPath = chain(
   cubic([430, 118], [360, 132], [300, 150], [236, 196]),
   cubic([236, 196], [176, 240], [112, 262], [128, 306]),
@@ -42,35 +53,6 @@ const silk = (from, to) => ribbon(ribbonPath, {
 export const RIBBON_SPLIT = 0.2;
 export const ribbonBackSVG = () => `<g opacity=".78">${silk(0, RIBBON_SPLIT)}</g>`;
 export const ribbonFrontSVG = () => `<g opacity=".78">${silk(RIBBON_SPLIT, 1)}</g>`;
-
-// ── Calla lilies ───────────────────────────────────────────────────────────
-function calla(stemLen, rot, seed) {
-  const stem = taper(cubic([0, 1], [3, stemLen * 0.3], [-5, stemLen * 0.7], [6, stemLen]), lineW(2.3, 3.2), 50);
-  return `
-  <path d="${stem}" fill="url(#stem)"/>
-  <path d="M-0.9 6C0 ${stemLen * 0.3} -3.8 ${stemLen * 0.7} 4.8 ${stemLen}" stroke="#d5e0bf" stroke-width=".55" fill="none" opacity=".6"/>
-  <g filter="url(#petalSoft)">${callaBloom({ H: 58, rot, seed })}</g>`;
-}
-
-export function liliesSVG() {
-  return `
-  <defs>
-    <linearGradient id="stem" x1="0" x2="1">
-      <stop offset="0" stop-color="#6c8350"/><stop offset=".35" stop-color="#9db27f"/>
-      <stop offset=".55" stop-color="#b3c497"/><stop offset="1" stop-color="#5f7646"/>
-    </linearGradient>
-    <filter id="petalSoft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".25"/></filter>
-    <filter id="lilyShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="3.2"/><feOffset dx="4" dy="6"/>
-      <feComponentTransfer><feFuncA type="linear" slope=".16"/></feComponentTransfer>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-  </defs>
-  <g filter="url(#lilyShadow)">
-    <g transform="translate(74 322) rotate(-62) scale(.95)">${calla(240, -62, 2)}</g>
-    <g transform="translate(96 262) rotate(-40) scale(1.22)">${calla(215, -40, 1)}</g>
-  </g>`;
-}
 
 // ── Heart locket ───────────────────────────────────────────────────────────
 // Polished champagne gold: each rim is a rounded metal profile that reflects a soft
