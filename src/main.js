@@ -1,6 +1,6 @@
 import { WEDDING } from './config.js';
 import { BOOTH_VIEWBOX, frameSVG } from './art/booth.js';
-import { boothFloralsSVG } from './art/botanical.js';
+import { boothFloralsSVG, heroFloralsSVG } from './art/botanical.js';
 import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, locketSVG, locketInitialsSVG, cupidsSVG } from './art/hero.js';
 import { PrinterSound } from './sound.js';
 
@@ -36,6 +36,7 @@ paint('boothFlorals', BOOTH_VIEWBOX, boothFloralsSVG());
 // Page 2 art is built after the booth starts, so the entrance appears instantly.
 const paintHero = () => {
   paint('heroOval', HERO_VIEWBOX, ovalSVG());
+  paint('heroFlorals', HERO_VIEWBOX, heroFloralsSVG());
   paintImage('ribbonBack', HERO_VIEWBOX, ribbonBackSVG());
   paintImage('ribbonFront', HERO_VIEWBOX, ribbonFrontSVG());
   paintImage('locket', HERO_VIEWBOX, locketSVG(), locketInitialsSVG(WEDDING.initial1, WEDDING.initial2));

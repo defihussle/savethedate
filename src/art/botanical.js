@@ -120,3 +120,22 @@ export function boothFloralsSVG() {
   ${sprig(arm(1), { leaves: 9, leafL: 19, tipBud: 5, seed: 2, flowers: [[0.38, -1, 9], [0.7, 1, 7]] })}
   ${at(C, 8, blossom(15, 7))}`;
 }
+
+// ── Page 2: little sprays tucked onto the gilt oval ────────────────────────
+// Hero coordinates (viewBox "0 0 400 460"); the oval is centred at 150,118 (rx 124, ry 152).
+export function heroFloralsSVG() {
+  const rim = (deg, out = 0) => {
+    const a = (deg * PI) / 180;
+    return [150 + (124 + out) * Math.cos(a), 118 + (152 + out) * Math.sin(a)];
+  };
+  // A rim-hugging stem from angle a0 to a1 (degrees), bowing slightly outward.
+  const along = (a0, a1, out = 4) => cubic(rim(a0, out), rim(a0 + (a1 - a0) / 3, out + 6), rim(a0 + (2 * (a1 - a0)) / 3, out + 6), rim(a1, out));
+  return `
+  ${sprig(along(130, 168), { leaves: 7, leafL: 17, tipBud: 5, seed: 21, flowers: [[0.5, -1, 8]], berries: [[0.75, 1, 2.4]] })}
+  ${sprig(along(130, 98), { leaves: 6, leafL: 16, tipBud: 5, seed: 22, flowers: [[0.55, 1, 7]] })}
+  ${at(rim(126, 10), 0, blossom(9, 23))}
+  ${at(rim(136, 2), 30, blossom(12, 24))}
+  ${sprig(along(-42, -70), { leaves: 5, leafL: 13, tipBud: 4, seed: 25, berries: [[0.5, 1, 2.2]] })}
+  ${sprig(along(-42, -18), { leaves: 5, leafL: 13, tipBud: 4, seed: 26, flowers: [[0.6, -1, 6]] })}
+  ${at(rim(-42, 4), 15, blossom(9, 27))}`;
+}
