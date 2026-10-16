@@ -1,7 +1,7 @@
 :root {
   /* Deep burgundy stationery with cream lettering and antique gold. */
-  --paper: #5c0b1d;
-  --glow: rgba(160, 35, 60, .3);
+  --paper: #3f0713;
+  --glow: rgba(130, 25, 45, .3);
   --cream: #efe4d2;
   --ink: var(--cream);
   --ink-soft: #d9cbb4;
