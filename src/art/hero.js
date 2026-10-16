@@ -259,11 +259,11 @@ export function waxSealSVG(i1, i2) {
 }
 
 // ── Lace heart ─────────────────────────────────────────────────────────────
-// A wine velvet heart edged in a gathered ivory lace frill, carrying the date.
+// A wine velvet heart edged in a gathered ivory lace frill, carrying a short invitation.
 // It rests on the plate's lower-left corner; text is live so it uses the site fonts.
 export const LACE_HEART = { cx: 100, cy: 286, s: 44, rot: -10 };
 
-export function laceHeartSVG(line1, line2) {
+export function laceHeartSVG() {
   const { cx, cy, s, rot } = LACE_HEART;
   const edge = heartCurve(cx, cy, s, rot);
   const N = 64;
@@ -300,8 +300,9 @@ export function laceHeartSVG(line1, line2) {
     <g transform="rotate(${rot} ${cx} ${cy})">
       <path d="${heartPath(cx, cy, s)}" fill="url(#velvet)"/>
       <path d="${heartPath(cx, cy + 0.6, s - 5)}" fill="none" stroke="#ead9cc" stroke-opacity=".45" stroke-width=".55" stroke-dasharray="1.6 2.2"/>
-      <text x="${cx}" y="${cy - 2}" text-anchor="middle" class="lace-date">${line1}</text>
-      <text x="${cx}" y="${cy + 11}" text-anchor="middle" class="lace-line">${line2}</text>
+      <text x="${cx}" y="${cy - 14}" text-anchor="middle" class="lace-line">Join us</text>
+      <text x="${cx}" y="${cy - 3}" text-anchor="middle" class="lace-small">for the wedding of</text>
+      <text x="${cx}" y="${cy + 14}" text-anchor="middle" class="lace-script">the Duris</text>
     </g>
   </g>`;
 }
