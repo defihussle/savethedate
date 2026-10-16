@@ -1,7 +1,7 @@
 import { WEDDING } from './config.js';
 import { BOOTH_VIEWBOX, frameSVG } from './art/booth.js';
 import { boothFloralsSVG, heroFloralsSVG } from './art/botanical.js';
-import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, locketSVG, locketInitialsSVG, cupidsSVG, waxSealSVG } from './art/hero.js';
+import { HERO_VIEWBOX, plateSVG, ribbonBackSVG, ribbonFrontSVG, locketSVG, locketInitialsSVG, cupidsSVG, waxSealSVG } from './art/hero.js';
 import { PrinterSound } from './sound.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -35,7 +35,7 @@ paint('boothFrame', BOOTH_VIEWBOX, frameSVG());
 paint('boothFlorals', BOOTH_VIEWBOX, boothFloralsSVG());
 // Page 2 art is built after the booth starts, so the entrance appears instantly.
 const paintHero = () => {
-  paint('heroOval', HERO_VIEWBOX, ovalSVG());
+  paint('heroPlate', HERO_VIEWBOX, plateSVG());
   paint('heroFlorals', HERO_VIEWBOX, heroFloralsSVG());
   paintImage('ribbonBack', HERO_VIEWBOX, ribbonBackSVG());
   paintImage('ribbonFront', HERO_VIEWBOX, ribbonFrontSVG());

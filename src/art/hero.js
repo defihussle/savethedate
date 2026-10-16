@@ -1,36 +1,71 @@
 // Page 2 artwork. All layers share viewBox "0 0 400 460" so they stack precisely.
 
 import { PI, cubic, chain, ribbon, heartPath, tangentAt, pt, v3, smoothstep, rgb } from './geom.js';
+import { cornerOrnament, crestOrnament, orn, emboss } from './booth.js';
 
 export const HERO_VIEWBOX = '0 0 400 460';
 
-// Champagne-pewter oval, in the same metal and carved lighting as the photo booth frame.
-export function ovalSVG() {
+// ── Carved plate ──────────────────────────────────────────────────────────
+// A baroque cartouche in the same champagne pewter as the photo booth frame:
+// arched top and bottom, scooped corners, a shell crest above and below,
+// and a satin panel inside for the Save the Date.
+export const PLATE = { cx: 150, cy: 132, W: 112, H: 130, arch: 10, notch: 20 };
+
+// Outline of the cartouche, inset by d, centred on the plate.
+function cartouche(d) {
+  const { cx, cy, arch } = PLATE;
+  const W = PLATE.W - d, H = PLATE.H - d, r = Math.max(4, PLATE.notch - d * 0.6), bow = 6;
+  const P = (x, y) => `${(cx + x).toFixed(2)} ${(cy + y).toFixed(2)}`;
+  return `M${P(-W + r, -H)}Q${P(0, -H - 2 * arch)} ${P(W - r, -H)}A${r} ${r} 0 0 0 ${P(W, -H + r)}` +
+    `Q${P(W + bow, 0)} ${P(W, H - r)}A${r} ${r} 0 0 0 ${P(W - r, H)}` +
+    `Q${P(0, H + 2 * arch)} ${P(-W + r, H)}A${r} ${r} 0 0 0 ${P(-W, H - r)}` +
+    `Q${P(-W - bow, 0)} ${P(-W, -H + r)}A${r} ${r} 0 0 0 ${P(-W + r, -H)}Z`;
+}
+
+export function plateSVG() {
+  const { cx, cy, W, H, arch } = PLATE;
+  const corner = orn(cornerOrnament());
+  const crest = orn(crestOrnament());
   return `
   <defs>
-    <linearGradient id="ovalGilt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f1e9dc"/><stop offset=".28" stop-color="#cbbca4"/>
-      <stop offset=".5" stop-color="#e8decd"/><stop offset=".76" stop-color="#b3a389"/>
+    <linearGradient id="pGilt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f1e9dc"/><stop offset=".3" stop-color="#cbbca4"/>
+      <stop offset=".55" stop-color="#e8decd"/><stop offset=".8" stop-color="#b3a389"/>
       <stop offset="1" stop-color="#94846b"/>
     </linearGradient>
-    <filter id="ovalGild" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="b"/>
-      <feDiffuseLighting in="b" surfaceScale="4" diffuseConstant="1.18" lighting-color="#fff" result="d">
-        <feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
-      <feSpecularLighting in="b" surfaceScale="4" specularConstant=".7" specularExponent="16" lighting-color="#fff6ea" result="s">
-        <feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>
-      <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
-      <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
-      <feComposite in="lit" in2="s2" operator="arithmetic" k2="1" k3=".8" result="out"/>
-      <feGaussianBlur in="SourceAlpha" stdDeviation="2.4"/><feOffset dx="2" dy="4" result="o"/>
-      <feFlood flood-color="#120a05" flood-opacity=".55"/><feComposite in2="o" operator="in" result="sh"/>
-      <feMerge><feMergeNode in="sh"/><feMergeNode in="out"/></feMerge>
-    </filter>
+    <linearGradient id="pBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d6c9b3"/><stop offset=".5" stop-color="#bba98d"/><stop offset="1" stop-color="#9a8a70"/>
+    </linearGradient>
+    <!-- champagne satin: a soft diagonal sheen across the panel -->
+    <linearGradient id="pSatin" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ddd2c1"/><stop offset=".35" stop-color="#efe7da"/>
+      <stop offset=".55" stop-color="#d9cdb9"/><stop offset=".8" stop-color="#e6dccb"/><stop offset="1" stop-color="#c9bba3"/>
+    </linearGradient>
+    <clipPath id="pPanelClip"><path d="${cartouche(17)}"/></clipPath>
+    <filter id="pSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+    ${emboss('pEmbossBody', 2.6, 4.5, 3)}
+    ${emboss('pEmbossRing', 1.2, 3)}
+    ${emboss('pEmbossOrn', 1.1, 3.2, 1.6)}
   </defs>
-  <g filter="url(#ovalGild)" fill="none" stroke="url(#ovalGilt)">
-    <ellipse cx="150" cy="118" rx="124" ry="152" stroke-width="9"/>
-    <ellipse cx="150" cy="118" rx="115.5" ry="143.5" stroke-width="3.2" stroke-dasharray="0 6.4" stroke-linecap="round"/>
-    <ellipse cx="150" cy="118" rx="108" ry="136" stroke-width="3"/>
+  <g filter="url(#pEmbossBody)">
+    <path fill="url(#pBody)" fill-rule="evenodd" d="${cartouche(0)} ${cartouche(17)}"/>
+  </g>
+  <path d="${cartouche(17)}" fill="url(#pSatin)"/>
+  <g clip-path="url(#pPanelClip)">
+    <path d="${cartouche(17)}" fill="none" stroke="#3a2c1c" stroke-width="14" opacity=".3" filter="url(#pSoft)" transform="translate(2 3)"/>
+  </g>
+  <g filter="url(#pEmbossRing)" fill="none" stroke="url(#pGilt)">
+    <path d="${cartouche(3.5)}" stroke-width="5"/>
+    <path d="${cartouche(9)}" stroke-width="3" stroke-dasharray="0 5.6" stroke-linecap="round"/>
+    <path d="${cartouche(15)}" stroke-width="3.6"/>
+  </g>
+  <g filter="url(#pEmbossOrn)" fill="url(#pGilt)">
+    <g transform="translate(${cx - W} ${cy - H}) scale(.78)">${corner}</g>
+    <g transform="translate(${cx + W} ${cy - H}) scale(-.78 .78)">${corner}</g>
+    <g transform="translate(${cx - W} ${cy + H}) scale(.78 -.78)">${corner}</g>
+    <g transform="translate(${cx + W} ${cy + H}) scale(-.78 -.78)">${corner}</g>
+    <g transform="translate(${cx} ${cy - H - arch + 2}) scale(.9)">${crest}</g>
+    <g transform="translate(${cx} ${cy + H + arch - 2}) scale(.74 -.74)">${crest}</g>
   </g>`;
 }
 

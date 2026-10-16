@@ -237,8 +237,9 @@ body.entering .site, body.entered .site { visibility: visible; }
   overflow-x: clip;
 }
 .h-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-/* Centred on the gilt oval (ovalSVG: cx 150, cy 118 in the 400 × 460 artwork). */
-.h-text { position: absolute; left: 37.5%; top: calc(118 / 460 * 100%); width: 52%; transform: translate(-50%, -50%); text-align: center; }
+/* Centred on the carved plate (PLATE in hero.js: cx 150, cy 132 in the 400 × 460 artwork), printed in dark ink on the satin. */
+.h-text { position: absolute; left: 37.5%; top: calc(132 / 460 * 100%); width: 50%; transform: translate(-50%, -50%); text-align: center; }
+.h-text .script, .h-text .std-num { color: var(--espresso); }
 .std { margin: 0; line-height: .8; }
 .std > span { display: block; }
 .std-save { font-size: 17cqw; }
@@ -280,7 +281,7 @@ body.entering .site, body.entered .site { visibility: visible; }
 /* Entrance choreography once the guest taps in. */
 .hero > * { opacity: 0; }
 body.entered .hero > * { animation: rise 1.6s var(--ease-silk) both; }
-body.entered .hero .h-oval { animation-delay: .1s; }
+body.entered .hero .h-plate { animation-delay: .1s; }
 body.entered .hero .h-florals { animation-delay: .25s; }
 body.entered .hero .h-text { animation-delay: .35s; }
 body.entered .hero .h-ribbon-back, body.entered .hero .h-ribbon-front { animation-name: fade; animation-duration: 2.2s; animation-delay: .9s; }

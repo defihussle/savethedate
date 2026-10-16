@@ -55,7 +55,7 @@ function collect(items) {
 }
 
 // Corner cartouche, local coords: outer corner at 0,0, rails run along +x and +y.
-function cornerOrnament() {
+export function cornerOrnament() {
   const items = [
     ...fan([13, 13], PI * 1.25, PI * 0.95, 5, 19, 4.6),
     volute(19, 19, 11, 2.6, PI * 1.25, 1.15, 4.4, 1.6), [19, 19, 3],
@@ -71,7 +71,7 @@ function cornerOrnament() {
 }
 
 // Shell-and-scroll crest centred on 0,0 (the outer edge of the rail), rising towards -y.
-function crestOrnament() {
+export function crestOrnament() {
   const items = [...fan([0, 6], -PI / 2, PI * 0.95, 7, 25, 5), [0, 6, 4.2]];
   for (const s of [-1, 1]) {
     const X = ([x, y]) => [x * s, y];
@@ -94,9 +94,9 @@ function sideOrnament() {
 
 const paths = (list, attrs = '') => list.map((p) => `<path d="${p}" ${attrs}/>`).join('');
 const circles = (list) => list.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join('');
-const orn = ({ d, dots }) => paths(d) + circles(dots);
+export const orn = ({ d, dots }) => paths(d) + circles(dots);
 
-function emboss(id, blur, scale, shadow) {
+export function emboss(id, blur, scale, shadow) {
   return `
   <filter id="${id}" filterUnits="userSpaceOnUse" x="-60" y="-140" width="420" height="800" color-interpolation-filters="sRGB">
     <feGaussianBlur in="SourceAlpha" stdDeviation="${blur}" result="b"/>

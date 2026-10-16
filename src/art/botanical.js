@@ -122,21 +122,15 @@ export function boothFloralsSVG() {
   ${at(C, 8, blossom(15, 7))}`;
 }
 
-// ── Page 2: little sprays tucked onto the gilt oval ────────────────────────
-// Hero coordinates (viewBox "0 0 400 460"); the oval is centred at 150,118 (rx 124, ry 152).
+// ── Page 2: little sprays tucked onto the carved plate ─────────────────────
+// Hero coordinates (viewBox "0 0 400 460"); the plate spans x 38–262, y 2–262 (PLATE in hero.js).
 export function heroFloralsSVG() {
-  const rim = (deg, out = 0) => {
-    const a = (deg * PI) / 180;
-    return [150 + (124 + out) * Math.cos(a), 118 + (152 + out) * Math.sin(a)];
-  };
-  // A rim-hugging stem from angle a0 to a1 (degrees), bowing slightly outward.
-  const along = (a0, a1, out = 4) => cubic(rim(a0, out), rim(a0 + (a1 - a0) / 3, out + 6), rim(a0 + (2 * (a1 - a0)) / 3, out + 6), rim(a1, out));
   return `
-  ${sprig(along(130, 168), { leaves: 7, leafL: 17, tipBud: 5, seed: 21, flowers: [[0.5, -1, 8]], berries: [[0.75, 1, 2.4]] })}
-  ${sprig(along(130, 98), { leaves: 6, leafL: 16, tipBud: 5, seed: 22, flowers: [[0.55, 1, 7]] })}
-  ${at(rim(126, 10), 0, blossom(9, 23))}
-  ${at(rim(136, 2), 30, blossom(12, 24))}
-  ${sprig(along(-42, -70), { leaves: 5, leafL: 13, tipBud: 4, seed: 25, berries: [[0.5, 1, 2.2]] })}
-  ${sprig(along(-42, -18), { leaves: 5, leafL: 13, tipBud: 4, seed: 26, flowers: [[0.6, -1, 6]] })}
-  ${at(rim(-42, 4), 15, blossom(9, 27))}`;
+  ${sprig(cubic([40, 252], [28, 230], [26, 200], [30, 172]), { leaves: 7, leafL: 17, tipBud: 5, seed: 21, flowers: [[0.5, 1, 8]], berries: [[0.75, -1, 2.4]] })}
+  ${sprig(cubic([46, 262], [66, 274], [88, 278], [112, 276]), { leaves: 6, leafL: 16, tipBud: 5, seed: 22, flowers: [[0.55, -1, 7]] })}
+  ${at([30, 262], 0, blossom(9, 23))}
+  ${at([44, 256], 30, blossom(12, 24))}
+  ${sprig(cubic([254, 4], [236, -6], [216, -8], [198, -6]), { leaves: 5, leafL: 13, tipBud: 4, seed: 25, berries: [[0.5, -1, 2.2]] })}
+  ${sprig(cubic([258, 10], [266, 28], [268, 46], [266, 64]), { leaves: 5, leafL: 13, tipBud: 4, seed: 26, flowers: [[0.6, 1, 6]] })}
+  ${at([256, 6], 15, blossom(9, 27))}`;
 }
