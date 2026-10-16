@@ -22,6 +22,8 @@ export const WEDDING = {
   sheetEndpoint: '',
 };
 
-// The Save the Date strip uses the same three photos.
+// The Save the Date strip uses the same three photos; the playing card has its own
+// portrait crop of the first one, so it isn't zoomed in to fill the tall frame.
+WEDDING.cardPhoto = '/photos/lisboa-card.jpg';
 WEDDING.heroPhotos = WEDDING.boothPhotos;
 WEDDING.stripCaption = `${WEDDING.partner1} + ${WEDDING.partner2} • ${WEDDING.dateShort}`;

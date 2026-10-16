@@ -10,7 +10,7 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 document.querySelectorAll('[data-bind]').forEach((el) => { el.textContent = WEDDING[el.dataset.bind] ?? ''; });
 document.title = `${WEDDING.partner1} & ${WEDDING.partner2} — Save the Date`;
 document.querySelectorAll('img[data-photo]').forEach((img) => {
-  const set = img.dataset.photo === 'booth' ? WEDDING.boothPhotos : WEDDING.heroPhotos;
+  const set = { booth: WEDDING.boothPhotos, hero: WEDDING.heroPhotos, card: [WEDDING.cardPhoto] }[img.dataset.photo];
   img.src = set[Number(img.dataset.i)];
   img.decoding = 'async';
 });
