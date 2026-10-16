@@ -58,8 +58,8 @@
   <main class="site" id="site">
     <!-- PAGE 2 — Save the Date -->
     <section class="hero" aria-label="Save the date">
-      <svg class="h-layer h-plate" id="heroPlate" aria-hidden="true"></svg>
       <img class="h-bouquet" src="/flowers/bouquet.webp" alt="" aria-hidden="true" />
+      <svg class="h-layer h-plate" id="heroPlate" aria-hidden="true"></svg>
       <div class="h-text">
         <h2 class="std script">
           <span class="std-save">Save</span>
@@ -67,6 +67,7 @@
         </h2>
         <p class="std-num" data-bind="dateShort"></p>
       </div>
+      <svg class="h-layer h-lace" id="laceHeart" aria-hidden="true"></svg>
       <div class="h-strip">
         <div class="strip strip--hero">
           <span class="strip-paper">
@@ -81,6 +82,7 @@
     </section>
 
     <section class="countdown" aria-label="Countdown to the wedding" data-reveal>
+      <p class="cd-heading small-caps">The countdown is on!</p>
       <div class="cd-grid" id="countdown">
         <span class="cd-unit"><span class="cd-num" id="cdDays">000</span><span class="cd-label">Days</span></span><span class="cd-sep">:</span>
         <span class="cd-unit"><span class="cd-num" id="cdHours">00</span><span class="cd-label">Hours</span></span><span class="cd-sep">:</span>
@@ -89,6 +91,11 @@
       </div>
       <p class="cd-today script" id="cdToday" hidden>Today&rsquo;s the Day</p>
     </section>
+
+    <div class="invite-next" data-reveal>
+      <p class="formal script">Formal invitation to follow</p>
+      <a class="address-btn" href="#details">Share your address</a>
+    </div>
 
     <!-- A vintage playing card: O ♥ for each of us -->
     <section class="lucky" aria-label="How lucky are we" data-reveal>
@@ -101,11 +108,6 @@
     </section>
 
     <svg class="cupids" id="cupids" viewBox="0 0 300 104" role="img" aria-label="Two cupids aiming at a heart" data-reveal></svg>
-
-    <a class="continue" href="#details" data-reveal>
-      <span>Share your details</span>
-      <svg viewBox="0 0 12 40" aria-hidden="true"><path d="M6 0v37M2 33l4 4 4-4" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
 
     <!-- PAGE 3 — Share your details -->
     <section class="details" id="details" aria-label="Share your details">

@@ -29,6 +29,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 body.intro { overflow: hidden; height: 100dvh; }
+body.entered { background: #3a0a17; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 img { display: block; }
 .script { font-family: var(--calligraphy); font-weight: 400; color: var(--script); }
@@ -36,14 +37,14 @@ img { display: block; }
 /* Chocolate suede stationery: a soft pool of light, fine weave and grain. */
 .paper {
   background:
-    radial-gradient(120% 70% at 50% 30%, rgba(120, 82, 58, .32), rgba(120, 82, 58, 0) 65%),
+    radial-gradient(120% 70% at 50% 30%, var(--glow, rgba(120, 82, 58, .32)), transparent 65%),
     radial-gradient(90% 60% at 50% 115%, rgba(0, 0, 0, .35), transparent 70%),
     repeating-linear-gradient(135deg, rgba(255, 235, 210, .018) 0 1px, transparent 1px 4px),
     repeating-linear-gradient(45deg, rgba(0, 0, 0, .06) 0 1px, transparent 1px 6px),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .75 0 0 0 0 .62 0 0 0 0 .5 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
     var(--paper);
 }
-body > .paper { position: fixed; inset: 0; z-index: 0; }
+body > .paper { position: fixed; inset: 0; z-index: 0; --paper: #3a0a17; --glow: rgba(150, 40, 70, .3); }
 
 .small-caps, .eyebrow {
   font-family: var(--serif);
@@ -238,15 +239,15 @@ body.entering .site, body.entered .site { visibility: visible; }
   overflow-x: clip;
 }
 .h-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-/* A real bouquet resting on the plate's lower corner, its amaranthus trailing down.
+/* A real bouquet tucked under the plate behind the lace heart, its amaranthus trailing down.
    The photo was cut below the florist's hand (right of 63%, below 51%), so that edge fades out. */
 .h-bouquet {
   position: absolute;
-  left: 1%;
+  left: -5%;
   top: 50%;
-  width: 52%;
-  transform: rotate(-6deg);
-  transform-origin: 60% 30%;
+  width: 46%;
+  transform: rotate(-10deg);
+  transform-origin: 50% 30%;
   -webkit-mask: linear-gradient(#000, #000) left / 63% 100% no-repeat, linear-gradient(#000 43%, transparent 51%) right / 37.2% 100% no-repeat;
   mask: linear-gradient(#000, #000) left / 63% 100% no-repeat, linear-gradient(#000 43%, transparent 51%) right / 37.2% 100% no-repeat;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .45));
@@ -271,9 +272,10 @@ body.entering .site, body.entered .site { visibility: visible; }
 }
 .h-strip {
   position: absolute;
-  left: 67%;
-  top: 3.5%;
+  left: 61%;
+  top: 4%;
   width: 25%;
+  rotate: 2deg;
 }
 /* A crisp white photo booth strip in classic black & white, sealed at the top with wax. */
 .strip--hero { position: relative; left: auto; margin: 0; width: 100%; transform: none; aspect-ratio: 90 / 238; }
@@ -298,6 +300,7 @@ body.entering .site, body.entered .site { visibility: visible; }
 body.entered .hero > * { animation: rise 1.6s var(--ease-silk) both; }
 body.entered .hero .h-plate { animation-delay: .1s; }
 body.entered .hero .h-bouquet { animation-delay: .5s; }
+body.entered .hero .h-lace { animation-delay: .8s; }
 body.entered .hero .h-text { animation-delay: .35s; }
 body.entered .hero .h-strip { animation: settle 1.9s var(--ease-silk) .5s both; }
 body.entered .hero .h-locket { animation-delay: 1.1s; }
@@ -312,7 +315,8 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
 [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 1.4s var(--ease-silk), transform 1.4s var(--ease-silk); }
 [data-reveal].in { opacity: 1; transform: none; }
 
-.countdown { text-align: center; padding-top: clamp(130px, 26vh, 230px); }
+.countdown { text-align: center; padding-top: clamp(64px, 13vh, 120px); }
+.cd-heading { margin: 0 0 14px; font-size: clamp(12px, 3.4vw, 15px); letter-spacing: .26em; }
 .cd-grid { display: inline-flex; align-items: flex-start; justify-content: center; }
 .cd-unit { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .cd-num {
@@ -330,7 +334,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   font-size: clamp(10px, 3vw, 13px);
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--sage);
+  color: var(--ink-soft);
 }
 .cd-today { margin: 0; font-size: clamp(52px, 15vw, 84px); }
 
@@ -387,22 +391,25 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   color: var(--champagne);
 }
 
-.continue {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin: clamp(90px, 18vh, 150px) auto 0;
-  width: max-content;
-  color: var(--sage);
+/* "Formal invitation to follow" and an outlined button down to the details form. */
+.invite-next { margin-top: clamp(40px, 8vh, 72px); text-align: center; }
+.formal { margin: 0; font-size: clamp(34px, 10vw, 52px); line-height: 1.1; }
+.address-btn {
+  display: inline-block;
+  margin-top: 26px;
+  padding: 14px 34px;
+  border: 1px solid var(--cream);
+  color: var(--cream);
   text-decoration: none;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: .28em;
   text-transform: uppercase;
+  transition: background .3s;
 }
-.continue svg { width: 12px; height: 40px; animation: drift 2.8s ease-in-out infinite; }
-@keyframes drift { 50% { transform: translateY(6px); } }
+.address-btn:hover { background: rgba(239, 228, 210, .1); }
+.lace-date { font-family: var(--display); font-size: 11px; letter-spacing: .08em; fill: var(--cream); }
+.lace-line { font-family: var(--serif); font-size: 6px; letter-spacing: .2em; text-transform: uppercase; fill: var(--cream); }
 
 /* ───────────────────────── PAGE 3 — SHARE YOUR DETAILS ───────────────────────── */
 .details { padding-top: clamp(110px, 22vh, 180px); text-align: center; scroll-margin-top: 24px; }
@@ -446,9 +453,9 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   width: 100%;
   margin-top: 8px;
   padding: 14px 20px;
-  border: 0;
+  border: 1px solid var(--cream);
   border-radius: 0;
-  background: var(--sage-deep);
+  background: transparent;
   color: var(--cream);
   font-family: var(--serif);
   font-weight: 500;
@@ -457,7 +464,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   text-transform: uppercase;
   transition: background .3s, transform .2s;
 }
-.submit:hover { background: #6f7a57; }
+.submit:hover { background: rgba(239, 228, 210, .1); }
 .submit:active { transform: translateY(1px); }
 .submit:disabled { opacity: .7; cursor: default; }
 .form-status { min-height: 1.4em; margin: 14px 0 0; text-align: center; font-size: 15px; font-style: italic; color: var(--ink-soft); }
@@ -471,5 +478,5 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   html { scroll-behavior: auto; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   body.entered .hero > * { animation-duration: .01s; animation-delay: 0s !important; }
-  .continue svg, .booth .lamp { animation: none; }
+  .booth .lamp { animation: none; }
 }

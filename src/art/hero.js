@@ -172,7 +172,7 @@ export function locketSVG() {
       <feMerge><feMergeNode in="s"/><feMergeNode in="c3"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <g transform="translate(214 378) scale(1.12)" filter="url(#lShadow)">
+  <g transform="translate(300 300) scale(1.02)" filter="url(#lShadow)">
     ${half(-35, -9, 'L')}
     ${half(35, 9, 'R')}
     ${knuckle(-23, 6)}${knuckle(-16.4, 6)}${knuckle(-9.8, 6)}
@@ -183,7 +183,7 @@ export function locketSVG() {
 
 // The initials sit in their own live-text layer (the metalwork is rasterised).
 export const locketInitialsSVG = (i1, i2) => `
-  <g transform="translate(214 378) scale(1.12)">
+  <g transform="translate(300 300) scale(1.02)">
     <text transform="translate(-35 0) rotate(-9)" x="0" y="13" text-anchor="middle" class="locket-initial">${i1}</text>
     <text transform="translate(35 0) rotate(9)" x="0" y="13" text-anchor="middle" class="locket-initial">${i2}</text>
   </g>`;
@@ -256,4 +256,52 @@ export function waxSealSVG(i1, i2) {
   ${mono(-0.8, -0.9, '#fff', 0.9)}
   ${mono(0.9, 1.1, '#6b5326', 0.85)}
   ${mono(0, 0, '#c8aa68', 1)}`;
+}
+
+// ── Lace heart ─────────────────────────────────────────────────────────────
+// A wine velvet heart edged in a gathered ivory lace frill, carrying the date.
+// It rests on the plate's lower-left corner; text is live so it uses the site fonts.
+export const LACE_HEART = { cx: 100, cy: 286, s: 44, rot: -10 };
+
+export function laceHeartSVG(line1, line2) {
+  const { cx, cy, s, rot } = LACE_HEART;
+  const edge = heartCurve(cx, cy, s, rot);
+  const N = 64;
+  let scallops = '', pleats = '', holes = '';
+  for (let i = 0; i < N; i++) {
+    const t = (i + 0.5) / N;
+    const p = edge(t);
+    let [tx, ty] = tangentAt(edge, t);
+    let n = [ty, -tx];
+    if ((p[0] - cx) * n[0] + (p[1] - cy - 0.06 * s) * n[1] < 0) n = [-n[0], -n[1]];
+    const at = (d) => [p[0] + n[0] * d, p[1] + n[1] * d];
+    const q = at(8);
+    scallops += `<circle cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="6.6"/>`;
+    pleats += `M${pt(at(1))}L${pt(at(13.5))}`;
+    const h = at(9.5);
+    holes += `<circle cx="${h[0].toFixed(2)}" cy="${h[1].toFixed(2)}" r="1.15"/>`;
+    if (i % 2) { const m = at(4); holes += `<circle cx="${m[0].toFixed(2)}" cy="${m[1].toFixed(2)}" r=".7"/>`; }
+  }
+  return `
+  <defs>
+    <radialGradient id="velvet" cx=".38" cy=".32" r=".85">
+      <stop offset="0" stop-color="#8e2744"/><stop offset=".55" stop-color="#5c1126"/><stop offset="1" stop-color="#3e0a19"/>
+    </radialGradient>
+    <filter id="laceShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/><feOffset dx="2" dy="5"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".45"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#laceShadow)">
+    <g fill="#f4efe6" fill-opacity=".93" stroke="#d6ccbc" stroke-width=".4">${scallops}</g>
+    <path d="${pleats}" stroke="#ddd3c4" stroke-width=".45" fill="none"/>
+    <g fill="#3d0c1a" fill-opacity=".55">${holes}</g>
+    <g transform="rotate(${rot} ${cx} ${cy})">
+      <path d="${heartPath(cx, cy, s)}" fill="url(#velvet)"/>
+      <path d="${heartPath(cx, cy + 0.6, s - 5)}" fill="none" stroke="#ead9cc" stroke-opacity=".45" stroke-width=".55" stroke-dasharray="1.6 2.2"/>
+      <text x="${cx}" y="${cy - 2}" text-anchor="middle" class="lace-date">${line1}</text>
+      <text x="${cx}" y="${cy + 11}" text-anchor="middle" class="lace-line">${line2}</text>
+    </g>
+  </g>`;
 }

@@ -1,6 +1,6 @@
 import { WEDDING } from './config.js';
 import { BOOTH_VIEWBOX, frameSVG } from './art/booth.js';
-import { HERO_VIEWBOX, plateSVG, locketSVG, locketInitialsSVG, cupidsSVG, waxSealSVG } from './art/hero.js';
+import { HERO_VIEWBOX, plateSVG, locketSVG, locketInitialsSVG, cupidsSVG, waxSealSVG, laceHeartSVG } from './art/hero.js';
 import { PrinterSound } from './sound.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -35,6 +35,7 @@ paint('boothFrame', BOOTH_VIEWBOX, frameSVG());
 const paintHero = () => {
   paint('heroPlate', HERO_VIEWBOX, plateSVG());
   paintImage('locket', HERO_VIEWBOX, locketSVG(), locketInitialsSVG(WEDDING.initial1, WEDDING.initial2));
+  paint('laceHeart', HERO_VIEWBOX, laceHeartSVG(WEDDING.weddingDate.split('-').reverse().join('.'), 'Save the date'));
 };
 (window.requestIdleCallback || ((f) => setTimeout(f, 200)))(paintHero, { timeout: 1500 });
 $('#cupids').innerHTML = cupidsSVG();
