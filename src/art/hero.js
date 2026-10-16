@@ -225,7 +225,7 @@ export function cupidsSVG() {
 }
 
 // ── Wax seal ───────────────────────────────────────────────────────────────
-// Sage green wax pressed over the top of the photo strip, embossed with the initials.
+// Gold wax pressed over the top of the photo strip, embossed with the initials.
 // Local coords: centred on 0,0 within a 100 × 100 box.
 export function waxSealSVG(i1, i2) {
   let blob = '';
@@ -239,21 +239,21 @@ export function waxSealSVG(i1, i2) {
   return `
   <defs>
     <radialGradient id="wax" cx=".36" cy=".3" r=".8">
-      <stop offset="0" stop-color="#dfe5cb"/><stop offset=".4" stop-color="#b3bd97"/>
-      <stop offset=".8" stop-color="#8d986f"/><stop offset="1" stop-color="#6f7a55"/>
+      <stop offset="0" stop-color="#f6e9c4"/><stop offset=".4" stop-color="#dcc387"/>
+      <stop offset=".8" stop-color="#b3955a"/><stop offset="1" stop-color="#8a6f3c"/>
     </radialGradient>
     <radialGradient id="waxWell" cx=".6" cy=".66" r=".7">
-      <stop offset="0" stop-color="#c8d0ad"/><stop offset=".7" stop-color="#a4ae86"/><stop offset="1" stop-color="#859066"/>
+      <stop offset="0" stop-color="#ecdcae"/><stop offset=".7" stop-color="#d2b878"/><stop offset="1" stop-color="#a98b52"/>
     </radialGradient>
     <filter id="waxSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2"/></filter>
   </defs>
   <path d="${blob}Z" fill="url(#wax)"/>
-  <path d="${blob}Z" fill="none" stroke="#55603d" stroke-opacity=".4" stroke-width="1"/>
+  <path d="${blob}Z" fill="none" stroke="#6b5326" stroke-opacity=".4" stroke-width="1"/>
   <circle r="31" fill="url(#waxWell)"/>
-  <circle r="31" fill="none" stroke="#5d6843" stroke-opacity=".6" stroke-width="1.6" transform="translate(.6 .9)"/>
+  <circle r="31" fill="none" stroke="#7a5f2c" stroke-opacity=".6" stroke-width="1.6" transform="translate(.6 .9)"/>
   <circle r="31" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.2" transform="translate(-.7 -.9)"/>
   <ellipse cx="-20" cy="-26" rx="10" ry="4" fill="#fff" opacity=".55" transform="rotate(-35 -20 -26)" filter="url(#waxSoft)"/>
   ${mono(-0.8, -0.9, '#fff', 0.9)}
-  ${mono(0.9, 1.1, '#4a5434', 0.85)}
-  ${mono(0, 0, '#9ba57c', 1)}`;
+  ${mono(0.9, 1.1, '#6b5326', 0.85)}
+  ${mono(0, 0, '#c8aa68', 1)}`;
 }
