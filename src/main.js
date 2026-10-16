@@ -213,11 +213,17 @@ form.addEventListener('submit', async (e) => {
   const btn = form.querySelector('.submit');
   btn.disabled = true;
   status.textContent = 'Sending…';
+  const body = new URLSearchParams(new FormData(form)).toString();
+  // Also copy the answers into the Guest List spreadsheet. Apps Script doesn't allow
+  // cross-origin reads, so this is fire-and-forget; Netlify remains the record of truth.
+  if (WEDDING.sheetEndpoint) {
+    fetch(WEDDING.sheetEndpoint, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(body) }).catch(() => {});
+  }
   try {
     const res = await fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(new FormData(form)).toString(),
+      body,
     });
     if (!res.ok) throw new Error(String(res.status));
     form.classList.add('sent');

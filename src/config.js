@@ -16,6 +16,10 @@ export const WEDDING = {
   // Photo-booth photos, top to bottom. Colour photos are fine — the site renders
   // them in black & white. Landscape crops around 7:6 fit best.
   boothPhotos: ['/photos/booth-1.jpg', '/photos/booth-2.jpg', '/photos/booth-3.jpg'],
+
+  // Google Apps Script web app that adds each details form to the Wedding planner's
+  // Guest List (see google-sheet/apps-script.gs). Leave empty to use Netlify Forms only.
+  sheetEndpoint: '',
 };
 
 // The Save the Date strip uses the same three photos.
