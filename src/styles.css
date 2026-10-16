@@ -1,19 +1,20 @@
 :root {
-  /* Deep chocolate stationery with cream lettering and champagne metalwork. */
-  --paper: #2a1a12;
-  --cream: #efe4d2;
+  /* Olive linen stationery, ivory lettering, wine burgundy accents and antique brass. */
+  --paper: #7f7e53;
+  --cream: #f4eee1;
   --ink: var(--cream);
-  --ink-soft: #d9cbb4;
+  --ink-soft: #ece4d2;
   --script: var(--cream);
-  --gold-ink: #cdbd9f;
-  --champagne: #cdbd9f;
-  /* dark brown lettering for things printed on ivory (card, strip, locket) */
-  --espresso: #3b2518;
+  --gold-ink: #efe3c2;
+  --ivory-line: #e9e1cd;
+  /* lettering printed on ivory paper */
+  --wine: #6e1a24;
+  --moss: #5a5e2c;
   --serif: 'Cormorant Garamond', 'Times New Roman', serif;
   --display: 'Playfair Display', 'Didot', 'Bodoni 72', serif;
   --calligraphy: 'Pinyon Script', 'Snell Roundhand', cursive;
   --ease-silk: cubic-bezier(.22, .61, .21, 1);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -31,14 +32,14 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 img { display: block; }
 .script { font-family: var(--calligraphy); font-weight: 400; color: var(--script); }
 
-/* Chocolate suede stationery: a soft pool of light, fine weave and grain. */
+/* Olive linen: soft window light falling across a fine horizontal weave. */
 .paper {
   background:
-    radial-gradient(120% 70% at 50% 30%, rgba(120, 82, 58, .32), rgba(120, 82, 58, 0) 65%),
-    radial-gradient(90% 60% at 50% 115%, rgba(0, 0, 0, .35), transparent 70%),
-    repeating-linear-gradient(135deg, rgba(255, 235, 210, .018) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(45deg, rgba(0, 0, 0, .06) 0 1px, transparent 1px 6px),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .75 0 0 0 0 .62 0 0 0 0 .5 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 70% at 45% 28%, rgba(255, 248, 220, .16), rgba(255, 248, 220, 0) 65%),
+    radial-gradient(90% 60% at 50% 115%, rgba(40, 38, 15, .3), transparent 70%),
+    repeating-linear-gradient(0deg, rgba(40, 38, 15, .07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255, 250, 230, .035) 0 1px, transparent 1px 4px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .3 0 0 0 0 .15 0 0 0 .1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
     var(--paper);
 }
 body > .paper { position: fixed; inset: 0; z-index: 0; }
@@ -88,7 +89,7 @@ body > .paper { position: fixed; inset: 0; z-index: 0; }
   margin-top: calc(min(62dvh, 136vw) * -0.02);
 }
 .booth-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.booth-frame { filter: drop-shadow(0 12px 18px rgba(0, 0, 0, .45)) drop-shadow(0 2px 3px rgba(0, 0, 0, .4)); }
+.booth-frame { filter: drop-shadow(0 12px 18px rgba(35, 32, 10, .4)) drop-shadow(0 2px 3px rgba(35, 32, 10, .35)); }
 .booth-florals { pointer-events: none; }
 
 /* The printer comes to life: indicator jewel warms up, plate hums. */
@@ -162,7 +163,7 @@ body > .paper { position: fixed; inset: 0; z-index: 0; }
   color: var(--ink);
   white-space: nowrap;
   padding-bottom: 1cqw;
-  color: var(--espresso);
+  color: var(--wine);
 }
 .booth.done .strip, .booth.done .booth-frame { cursor: pointer; }
 
@@ -239,7 +240,7 @@ body.entering .site, body.entered .site { visibility: visible; }
 .h-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
 /* Centred on the carved plate (PLATE in hero.js: cx 150, cy 132 in the 400 × 460 artwork), printed in dark ink on the satin. */
 .h-text { position: absolute; left: 37.5%; top: calc(132 / 460 * 100%); width: 50%; transform: translate(-50%, -50%); text-align: center; }
-.h-text .script, .h-text .std-num { color: var(--espresso); }
+.h-text .script, .h-text .std-num { color: var(--moss); }
 .std { margin: 0; line-height: .8; }
 .std > span { display: block; }
 .std-save { font-size: 17cqw; }
@@ -270,13 +271,13 @@ body.entering .site, body.entered .site { visibility: visible; }
   z-index: 2;
   left: 50%;
   top: 0;
-  width: 56%;
-  transform: translate(-50%, -44%) rotate(-6deg);
+  width: 50%;
+  transform: translate(-50%, -86%) rotate(-6deg);
   overflow: visible;
   filter: drop-shadow(0 2px 2px rgba(60, 45, 20, .3)) drop-shadow(0 5px 8px rgba(60, 45, 20, .18));
 }
 .wax-seal .seal-initials { font-family: var(--calligraphy); font-size: 27px; }
-.locket-initial { font-family: var(--calligraphy); font-size: 30px; fill: var(--espresso); }
+.locket-initial { font-family: var(--calligraphy); font-size: 30px; fill: var(--wine); }
 
 /* Entrance choreography once the guest taps in. */
 .hero > * { opacity: 0; }
@@ -346,7 +347,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   border-radius: 4cqw;
   filter: grayscale(1) contrast(1.08) brightness(1.03);
 }
-.pc-index { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 1.5cqw; color: var(--espresso); }
+.pc-index { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 1.5cqw; color: var(--wine); }
 .pc-index--top { left: 5.5%; top: 4.5%; }
 .pc-index--bottom { right: 5.5%; bottom: 4.5%; transform: rotate(180deg); }
 .pc-rank { font-family: var(--display); font-size: 13cqw; line-height: .8; }
@@ -360,7 +361,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   line-height: .95;
   text-align: right;
   transform: rotate(-7deg);
-  color: var(--espresso);
+  color: var(--wine);
   text-shadow: 0 0 6px #f8f2e6, 0 0 2px #f8f2e6;
 }
 .pc-script span { display: block; padding-right: 3cqw; }
@@ -369,7 +370,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   display: block;
   width: min(78%, 360px);
   margin: clamp(64px, 12vh, 110px) auto 0;
-  color: var(--champagne);
+  color: var(--ivory-line);
 }
 
 .continue {
@@ -419,22 +420,23 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   padding: 12px 14px;
   font: 17px/1.45 var(--serif);
   color: var(--ink);
-  background: rgba(255, 240, 220, .04);
-  border: 1px solid rgba(239, 228, 210, .3);
+  background: rgba(255, 250, 238, .1);
+  border: 1px solid rgba(244, 238, 225, .45);
   border-radius: 2px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .2);
+  box-shadow: inset 0 1px 2px rgba(40, 38, 15, .15);
   transition: border-color .3s, background .3s;
 }
-.field textarea:focus { outline: none; border-color: rgba(239, 228, 210, .75); background: rgba(255, 240, 220, .08); }
+.field textarea:focus { outline: none; border-color: rgba(244, 238, 225, .85); background: rgba(255, 250, 238, .18); }
 .submit {
   display: block;
   width: 100%;
   margin-top: 8px;
   padding: 14px 20px;
-  border: 1px solid var(--cream);
+  border: 0;
   border-radius: 0;
-  background: transparent;
+  background: var(--wine);
   color: var(--cream);
+  box-shadow: 0 8px 18px -8px rgba(40, 10, 10, .55);
   font-family: var(--serif);
   font-weight: 500;
   font-size: 13px;
@@ -442,7 +444,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   text-transform: uppercase;
   transition: background .3s, transform .2s;
 }
-.submit:hover { background: rgba(239, 228, 210, .1); }
+.submit:hover { background: #5c141d; }
 .submit:active { transform: translateY(1px); }
 .submit:disabled { opacity: .7; cursor: default; }
 .form-status { min-height: 1.4em; margin: 14px 0 0; text-align: center; font-size: 15px; font-style: italic; color: var(--ink-soft); }

@@ -1,14 +1,14 @@
 // Hand-drawn botanical sprigs in the same engraved line style as the cupids:
-// fine ink outlines over ivory paper blossoms and soft sage foliage.
+// fine ink outlines over wine burgundy blossoms and deep moss foliage.
 
 import { PI, cubic, pt, tangentAt } from './geom.js';
 
-const LEAF_INK = '#4e4a30';
-const LEAF_WASH = '#a9a77f';
-const STEM = '#a9a47c';
-const PETAL_INK = '#5a4232';
-const PETAL_WASH = '#f1e8da';
-const HEART_WASH = '#c8b48c';
+const LEAF_INK = '#2f3216';
+const LEAF_WASH = '#5c6130';
+const STEM = '#3f4320';
+const PETAL_INK = '#3e0c13';
+const PETAL_WASH = '#7a1e29';
+const HEART_WASH = '#d8bf86';
 
 const deg = (r) => (r * 180) / PI;
 // Small deterministic jitter so repeated leaves and petals don't look stamped.

@@ -102,7 +102,7 @@ export function emboss(id, blur, scale, shadow) {
     <feGaussianBlur in="SourceAlpha" stdDeviation="${blur}" result="b"/>
     <feDiffuseLighting in="b" surfaceScale="${scale}" diffuseConstant="1.22" lighting-color="#fff" result="d">
       <feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>
-    <feSpecularLighting in="b" surfaceScale="${scale}" specularConstant=".85" specularExponent="18" lighting-color="#fff6ea" result="s">
+    <feSpecularLighting in="b" surfaceScale="${scale}" specularConstant=".85" specularExponent="18" lighting-color="#fff3d6" result="s">
       <feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>
     <feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1" result="lit"/>
     <feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>
@@ -110,7 +110,7 @@ export function emboss(id, blur, scale, shadow) {
     ${shadow ? `
     <feGaussianBlur in="SourceAlpha" stdDeviation="${shadow}"/>
     <feOffset dx="${shadow * 0.7}" dy="${shadow * 1.1}" result="o"/>
-    <feFlood flood-color="#1e140c" flood-opacity=".6"/>
+    <feFlood flood-color="#2e2a10" flood-opacity=".55"/>
     <feComposite in2="o" operator="in" result="sh"/>
     <feMerge><feMergeNode in="sh"/><feMergeNode in="out"/></feMerge>` : ''}
   </filter>`;
@@ -119,19 +119,19 @@ export function emboss(id, blur, scale, shadow) {
 const defs = `
 <defs>
   <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#f1e9dc"/><stop offset=".3" stop-color="#cbbca4"/>
-    <stop offset=".55" stop-color="#e8decd"/><stop offset=".8" stop-color="#b3a389"/>
-    <stop offset="1" stop-color="#94846b"/>
+    <stop offset="0" stop-color="#f0e2b8"/><stop offset=".3" stop-color="#c6a96b"/>
+    <stop offset=".55" stop-color="#e4d09c"/><stop offset=".8" stop-color="#a88a50"/>
+    <stop offset="1" stop-color="#836a38"/>
   </linearGradient>
   <linearGradient id="goldDeep" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#d6c9b3"/><stop offset=".5" stop-color="#bba98d"/><stop offset="1" stop-color="#9a8a70"/>
+    <stop offset="0" stop-color="#cdb582"/><stop offset=".5" stop-color="#b09662"/><stop offset="1" stop-color="#8c7444"/>
   </linearGradient>
   <linearGradient id="panel" x1="0" y1="0" x2=".35" y2="1">
-    <stop offset="0" stop-color="#ddd1bf"/><stop offset=".55" stop-color="#cfc1aa"/><stop offset="1" stop-color="#bfb097"/>
+    <stop offset="0" stop-color="#f2ecde"/><stop offset=".55" stop-color="#e9e1cf"/><stop offset="1" stop-color="#ddd3bd"/>
   </linearGradient>
   <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0" stop-color="#efe7da"/><stop offset=".35" stop-color="#cbbda6"/>
-    <stop offset=".6" stop-color="#e6dccb"/><stop offset="1" stop-color="#ab9b80"/>
+    <stop offset="0" stop-color="#f0e4c2"/><stop offset=".35" stop-color="#c9ae76"/>
+    <stop offset=".6" stop-color="#e6d4a6"/><stop offset="1" stop-color="#a2864e"/>
   </linearGradient>
   <linearGradient id="slot" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#000"/><stop offset=".6" stop-color="#1b1712"/><stop offset="1" stop-color="#3a3126"/>
