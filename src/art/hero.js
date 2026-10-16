@@ -6,9 +6,9 @@ import { cornerOrnament, crestOrnament, orn, emboss } from './booth.js';
 export const HERO_VIEWBOX = '0 0 400 460';
 
 // ── Carved plate ──────────────────────────────────────────────────────────
-// A baroque cartouche in the same antique brass as the photo booth frame:
+// A baroque cartouche in the same champagne pewter as the photo booth frame:
 // arched top and bottom, scooped corners, a shell crest above and below,
-// and an ivory paper panel inside for the Save the Date.
+// and a sage velvet panel inside for the Save the Date.
 export const PLATE = { cx: 150, cy: 132, W: 112, H: 130, arch: 10, notch: 20 };
 
 // Outline of the cartouche, inset by d, centred on the plate.
@@ -29,16 +29,17 @@ export function plateSVG() {
   return `
   <defs>
     <linearGradient id="pGilt" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f0e2b8"/><stop offset=".3" stop-color="#c6a96b"/>
-      <stop offset=".55" stop-color="#e4d09c"/><stop offset=".8" stop-color="#a88a50"/>
-      <stop offset="1" stop-color="#836a38"/>
+      <stop offset="0" stop-color="#f1e9dc"/><stop offset=".3" stop-color="#cbbca4"/>
+      <stop offset=".55" stop-color="#e8decd"/><stop offset=".8" stop-color="#b3a389"/>
+      <stop offset="1" stop-color="#94846b"/>
     </linearGradient>
     <linearGradient id="pBody" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#cdb582"/><stop offset=".5" stop-color="#b09662"/><stop offset="1" stop-color="#8c7444"/>
+      <stop offset="0" stop-color="#d6c9b3"/><stop offset=".5" stop-color="#bba98d"/><stop offset="1" stop-color="#9a8a70"/>
     </linearGradient>
-    <!-- heavy ivory paper, lit softly from the upper left -->
+    <!-- sage velvet: a soft diagonal sheen across the panel -->
     <linearGradient id="pSatin" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f7f2e7"/><stop offset=".5" stop-color="#f1ebdd"/><stop offset="1" stop-color="#e5dcc8"/>
+      <stop offset="0" stop-color="#a8b38e"/><stop offset=".35" stop-color="#c0caa6"/>
+      <stop offset=".55" stop-color="#a5b08b"/><stop offset=".8" stop-color="#b4be99"/><stop offset="1" stop-color="#909b75"/>
     </linearGradient>
     <clipPath id="pPanelClip"><path d="${cartouche(17)}"/></clipPath>
     <filter id="pSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
@@ -69,9 +70,9 @@ export function plateSVG() {
 }
 
 // ── Heart locket ───────────────────────────────────────────────────────────
-// Polished antique brass: each rim is a rounded metal profile that reflects a soft
+// Polished champagne pewter: each rim is a rounded metal profile that reflects a soft
 // studio environment, so it reads as a real piece of jewellery.
-const GOLD = [226, 198, 138];
+const GOLD = [228, 214, 190];
 const KEY = v3.norm([-0.45, -0.6, 0.66]);
 const FILL = v3.norm([0.65, -0.15, 0.74]);
 function metal(n) {
@@ -133,10 +134,10 @@ const circleCurve = (cx, cy, r) => (t) => [cx + r * Math.cos(2 * PI * t), cy + r
 export function locketSVG() {
   const half = (x, rot, id) => `
     <g transform="translate(${x} 0) rotate(${rot})">
-      <path d="${heartPath(0.9, 2, 34.6)}" fill="#6d5426"/>
+      <path d="${heartPath(0.9, 2, 34.6)}" fill="#6a5a46"/>
       <path d="${heartPath(0, 1, 26.2)}" fill="url(#enamel)"/>
       <g clip-path="url(#lclip${id})">
-        <path d="${heartPath(0, 1, 26.2)}" fill="none" stroke="#4d3a16" stroke-opacity=".5" stroke-width="5" filter="url(#lInner)" transform="translate(1.6 2.4)"/>
+        <path d="${heartPath(0, 1, 26.2)}" fill="none" stroke="#4a3c2c" stroke-opacity=".5" stroke-width="5" filter="url(#lInner)" transform="translate(1.6 2.4)"/>
         <path d="M-30 -14L-6 -30L30 18L12 34Z" fill="url(#glare)"/>
       </g>
     </g>
@@ -154,11 +155,11 @@ export function locketSVG() {
       <stop offset=".6" stop-color="#fff" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="hinge" x1="0" x2="1">
-      <stop offset="0" stop-color="#7a5f2c"/><stop offset=".3" stop-color="#f6e6bc"/>
-      <stop offset=".55" stop-color="#c6a86a"/><stop offset="1" stop-color="#6d5426"/>
+      <stop offset="0" stop-color="#75644d"/><stop offset=".3" stop-color="#f3ebde"/>
+      <stop offset=".55" stop-color="#bfae92"/><stop offset="1" stop-color="#6a5a46"/>
     </linearGradient>
     <radialGradient id="bead" cx=".35" cy=".3" r=".75">
-      <stop offset="0" stop-color="#fff6dc"/><stop offset=".35" stop-color="#dcc48c"/><stop offset="1" stop-color="#7a5f2c"/>
+      <stop offset="0" stop-color="#fffaf0"/><stop offset=".35" stop-color="#d8c9b0"/><stop offset="1" stop-color="#75644d"/>
     </radialGradient>
     <clipPath id="lclipL"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
     <clipPath id="lclipR"><path d="${heartPath(0, 1, 26.2)}"/></clipPath>
@@ -175,7 +176,7 @@ export function locketSVG() {
     ${half(-35, -9, 'L')}
     ${half(35, 9, 'R')}
     ${knuckle(-23, 6)}${knuckle(-16.4, 6)}${knuckle(-9.8, 6)}
-    <path d="M-4.6 -16.7H4.6M-4.6 -10.1H4.6" stroke="#4d3a16" stroke-opacity=".6" stroke-width=".6"/>
+    <path d="M-4.6 -16.7H4.6M-4.6 -10.1H4.6" stroke="#4a3c2c" stroke-opacity=".6" stroke-width=".6"/>
     ${metalRing(circleCurve(0, -32, 5.4), 2.8, 60, 7)}
   </g>`;
 }
@@ -224,7 +225,7 @@ export function cupidsSVG() {
 }
 
 // ── Wax seal ───────────────────────────────────────────────────────────────
-// Olive green wax pressed over the top of the photo strip, embossed with the initials.
+// Sage green wax pressed over the top of the photo strip, embossed with the initials.
 // Local coords: centred on 0,0 within a 100 × 100 box.
 export function waxSealSVG(i1, i2) {
   let blob = '';
@@ -238,21 +239,21 @@ export function waxSealSVG(i1, i2) {
   return `
   <defs>
     <radialGradient id="wax" cx=".36" cy=".3" r=".8">
-      <stop offset="0" stop-color="#a9ab73"/><stop offset=".4" stop-color="#7f8346"/>
-      <stop offset=".8" stop-color="#5f6330"/><stop offset="1" stop-color="#4a4d24"/>
+      <stop offset="0" stop-color="#dfe5cb"/><stop offset=".4" stop-color="#b3bd97"/>
+      <stop offset=".8" stop-color="#8d986f"/><stop offset="1" stop-color="#6f7a55"/>
     </radialGradient>
     <radialGradient id="waxWell" cx=".6" cy=".66" r=".7">
-      <stop offset="0" stop-color="#8f9356"/><stop offset=".7" stop-color="#717540"/><stop offset="1" stop-color="#5a5e2e"/>
+      <stop offset="0" stop-color="#c8d0ad"/><stop offset=".7" stop-color="#a4ae86"/><stop offset="1" stop-color="#859066"/>
     </radialGradient>
     <filter id="waxSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2"/></filter>
   </defs>
   <path d="${blob}Z" fill="url(#wax)"/>
-  <path d="${blob}Z" fill="none" stroke="#3a3c1a" stroke-opacity=".4" stroke-width="1"/>
+  <path d="${blob}Z" fill="none" stroke="#55603d" stroke-opacity=".4" stroke-width="1"/>
   <circle r="31" fill="url(#waxWell)"/>
-  <circle r="31" fill="none" stroke="#3d401b" stroke-opacity=".6" stroke-width="1.6" transform="translate(.6 .9)"/>
-  <circle r="31" fill="none" stroke="#d9dba8" stroke-opacity=".55" stroke-width="1.2" transform="translate(-.7 -.9)"/>
-  <ellipse cx="-20" cy="-26" rx="10" ry="4" fill="#eef0c8" opacity=".4" transform="rotate(-35 -20 -26)" filter="url(#waxSoft)"/>
-  ${mono(-0.8, -0.9, '#c9cc94', 0.8)}
-  ${mono(0.9, 1.1, '#2f3115', 0.85)}
-  ${mono(0, 0, '#6b6f38', 1)}`;
+  <circle r="31" fill="none" stroke="#5d6843" stroke-opacity=".6" stroke-width="1.6" transform="translate(.6 .9)"/>
+  <circle r="31" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.2" transform="translate(-.7 -.9)"/>
+  <ellipse cx="-20" cy="-26" rx="10" ry="4" fill="#fff" opacity=".55" transform="rotate(-35 -20 -26)" filter="url(#waxSoft)"/>
+  ${mono(-0.8, -0.9, '#fff', 0.9)}
+  ${mono(0.9, 1.1, '#4a5434', 0.85)}
+  ${mono(0, 0, '#9ba57c', 1)}`;
 }
