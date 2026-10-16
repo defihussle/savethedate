@@ -1,7 +1,7 @@
 import { WEDDING } from './config.js';
 import { BOOTH_VIEWBOX, frameSVG } from './art/booth.js';
 import { boothFloralsSVG, heroFloralsSVG } from './art/botanical.js';
-import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, locketSVG, locketInitialsSVG, cupidsSVG } from './art/hero.js';
+import { HERO_VIEWBOX, ovalSVG, ribbonBackSVG, ribbonFrontSVG, locketSVG, locketInitialsSVG, cupidsSVG, waxSealSVG } from './art/hero.js';
 import { PrinterSound } from './sound.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -43,6 +43,7 @@ const paintHero = () => {
 };
 (window.requestIdleCallback || ((f) => setTimeout(f, 200)))(paintHero, { timeout: 1500 });
 $('#cupids').innerHTML = cupidsSVG();
+$('#waxSeal').innerHTML = waxSealSVG(WEDDING.initial1, WEDDING.initial2);
 $('.strip--hero').style.aspectRatio = '90 / 232';
 
 // ── Page 1: the photo booth prints the strip ───────────────────────────────

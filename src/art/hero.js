@@ -208,3 +208,37 @@ export function cupidsSVG() {
     <path d="${heartPath(150, 64.6, 15.5)}" stroke-width=".45"/>
   </g>`;
 }
+
+// ── Wax seal ───────────────────────────────────────────────────────────────
+// Champagne pearl wax pressed over the top of the photo strip, embossed with the initials.
+// Local coords: centred on 0,0 within a 100 × 100 box.
+export function waxSealSVG(i1, i2) {
+  let blob = '';
+  for (let i = 0; i <= 72; i++) {
+    const a = (2 * PI * i) / 72;
+    const r = 43 + 2.4 * Math.sin(5 * a + 1) + 1.5 * Math.sin(11 * a + 2) + 0.8 * Math.sin(19 * a + 0.5);
+    blob += `${i ? 'L' : 'M'}${pt([r * Math.cos(a), r * Math.sin(a)])}`;
+  }
+  const mono = (dx, dy, fill, op) =>
+    `<text x="${dx}" y="${8 + dy}" text-anchor="middle" class="seal-initials" fill="${fill}" fill-opacity="${op}">${i1}&amp;${i2}</text>`;
+  return `
+  <defs>
+    <radialGradient id="wax" cx=".36" cy=".3" r=".8">
+      <stop offset="0" stop-color="#fbf4e4"/><stop offset=".4" stop-color="#ead9b6"/>
+      <stop offset=".8" stop-color="#cdb385"/><stop offset="1" stop-color="#ad9162"/>
+    </radialGradient>
+    <radialGradient id="waxWell" cx=".6" cy=".66" r=".7">
+      <stop offset="0" stop-color="#f6ecd6"/><stop offset=".7" stop-color="#e4d0a8"/><stop offset="1" stop-color="#c9ad7b"/>
+    </radialGradient>
+    <filter id="waxSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.2"/></filter>
+  </defs>
+  <path d="${blob}Z" fill="url(#wax)"/>
+  <path d="${blob}Z" fill="none" stroke="#9c8152" stroke-opacity=".35" stroke-width="1"/>
+  <circle r="31" fill="url(#waxWell)"/>
+  <circle r="31" fill="none" stroke="#a88c5c" stroke-opacity=".55" stroke-width="1.6" transform="translate(.6 .9)"/>
+  <circle r="31" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="1.2" transform="translate(-.7 -.9)"/>
+  <ellipse cx="-20" cy="-26" rx="10" ry="4" fill="#fff" opacity=".55" transform="rotate(-35 -20 -26)" filter="url(#waxSoft)"/>
+  ${mono(-0.8, -0.9, '#fff', 0.9)}
+  ${mono(0.9, 1.1, '#6e5530', 0.85)}
+  ${mono(0, 0, '#c2a571', 1)}`;
+}
