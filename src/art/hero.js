@@ -321,9 +321,7 @@ export function laceHeartSVG() {
     <g transform="rotate(${rot} ${cx} ${cy})">
       <path d="${heartPath(cx, cy, s)}" fill="url(#velvet)"/>
       <path d="${heartPath(cx, cy + 0.6, s - 5)}" fill="none" stroke="#ead9cc" stroke-opacity=".45" stroke-width=".55" stroke-dasharray="1.6 2.2"/>
-      <text x="${cx}" y="${cy - 14}" text-anchor="middle" class="lace-line">Join us</text>
-      <text x="${cx}" y="${cy - 3}" text-anchor="middle" class="lace-small">for the wedding of</text>
-      <text x="${cx}" y="${cy + 14}" text-anchor="middle" class="lace-script">the Duris</text>
+      <text x="${cx}" y="${cy + 4}" text-anchor="middle" class="lace-script">The Duris</text>
     </g>
   </g>`;
 }

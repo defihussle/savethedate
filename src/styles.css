@@ -408,9 +408,7 @@ body.entered .hero .h-locket { animation-delay: 1.1s; }
   transition: background .3s;
 }
 .address-btn:hover { background: rgba(239, 228, 210, .1); }
-.lace-script { font-family: var(--calligraphy); font-size: 15px; fill: var(--cream); }
-.lace-small { font-family: var(--serif); font-style: italic; font-size: 8px; fill: var(--cream); }
-.lace-line { font-family: var(--serif); font-size: 7px; font-weight: 500; letter-spacing: .24em; text-transform: uppercase; fill: var(--cream); }
+.lace-script { font-family: var(--calligraphy); font-size: 17px; fill: var(--cream); }
 
 /* ───────────────────────── PAGE 3 — SHARE YOUR DETAILS ───────────────────────── */
 .details { padding-top: clamp(110px, 22vh, 180px); text-align: center; scroll-margin-top: 24px; }
