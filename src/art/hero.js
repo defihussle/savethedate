@@ -266,21 +266,35 @@ export const LACE_HEART = { cx: 100, cy: 286, s: 44, rot: -10 };
 export function laceHeartSVG() {
   const { cx, cy, s, rot } = LACE_HEART;
   const edge = heartCurve(cx, cy, s, rot);
-  const N = 64;
-  let scallops = '', pleats = '', holes = '';
-  for (let i = 0; i < N; i++) {
-    const t = (i + 0.5) / N;
+  // A point `d` units out from the heart's edge at parameter t.
+  const out = (t, d) => {
     const p = edge(t);
-    let [tx, ty] = tangentAt(edge, t);
+    const [tx, ty] = tangentAt(edge, Math.min(0.9995, Math.max(0.0005, t)));
     let n = [ty, -tx];
     if ((p[0] - cx) * n[0] + (p[1] - cy - 0.06 * s) * n[1] < 0) n = [-n[0], -n[1]];
-    const at = (d) => [p[0] + n[0] * d, p[1] + n[1] * d];
-    const q = at(8);
-    scallops += `<circle cx="${q[0].toFixed(2)}" cy="${q[1].toFixed(2)}" r="6.6"/>`;
-    pleats += `M${pt(at(1))}L${pt(at(13.5))}`;
-    const h = at(9.5);
-    holes += `<circle cx="${h[0].toFixed(2)}" cy="${h[1].toFixed(2)}" r="1.15"/>`;
-    if (i % 2) { const m = at(4); holes += `<circle cx="${m[0].toFixed(2)}" cy="${m[1].toFixed(2)}" r=".7"/>`; }
+    return [p[0] + n[0] * d, p[1] + n[1] * d];
+  };
+  const f2 = ([x, y]) => `cx="${x.toFixed(2)}" cy="${y.toFixed(2)}"`;
+  // Scalloped outer edge: K arches, each bulging out from 9 to 14.5 units.
+  const K = 30, STEPS = 10;
+  const reach = (f) => 9 + 5.5 * Math.sin(PI * f);
+  let rim = '', cordIn = '', motifs = '', picots = '', eyelets = '';
+  for (let j = 0; j <= K * STEPS; j++) {
+    const t = j / (K * STEPS), f = (j % STEPS) / STEPS;
+    rim += `${j ? 'L' : 'M'}${pt(out(t, reach(f)))}`;
+    cordIn += `${j ? 'L' : 'M'}${pt(out(t, 2.4))}`;
+  }
+  for (let k = 0; k < K; k++) {
+    const mid = (k + 0.5) / K;
+    // a little guipure flower in each arch, with an open centre
+    const c = out(mid, 8.2), [tx, ty] = tangentAt(edge, mid), a = (Math.atan2(ty, tx) * 180) / PI;
+    let petals = '';
+    for (let q = 0; q < 5; q++) petals += `<ellipse cx="0" cy="-2.1" rx="1.15" ry="2.1" transform="rotate(${q * 72})"/>`;
+    motifs += `<g transform="translate(${c[0].toFixed(2)} ${c[1].toFixed(2)}) rotate(${a.toFixed(1)})">${petals}</g>`;
+    eyelets += `<circle ${f2(c)} r=".75"/>`;
+    // picot dots along the crest of each arch, and an eyelet ring where arches meet
+    for (const f of [0.28, 0.5, 0.72]) picots += `<circle ${f2(out((k + f) / K, reach(f) + 1))} r=".55"/>`;
+    eyelets += `<circle ${f2(out(k / K, 5.2))} r="1.25" fill="none" stroke="#f6f1e8" stroke-width=".55"/>`;
   }
   return `
   <defs>
@@ -292,11 +306,18 @@ export function laceHeartSVG() {
       <feComponentTransfer><feFuncA type="linear" slope=".45"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <!-- fine tulle net that the motifs are worked into -->
+    <pattern id="laceNet" width="2.6" height="2.6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M0 0H2.6M0 0V2.6" stroke="#f6f1e8" stroke-width=".38" stroke-opacity=".85"/>
+    </pattern>
   </defs>
   <g filter="url(#laceShadow)">
-    <g fill="#f4efe6" fill-opacity=".93" stroke="#d6ccbc" stroke-width=".4">${scallops}</g>
-    <path d="${pleats}" stroke="#ddd3c4" stroke-width=".45" fill="none"/>
-    <g fill="#3d0c1a" fill-opacity=".55">${holes}</g>
+    <path d="${rim}Z" fill="#f6f1e8" fill-opacity=".14"/>
+    <path d="${rim}Z" fill="url(#laceNet)"/>
+    <path d="${rim}Z" fill="none" stroke="#f6f1e8" stroke-width="1.05" stroke-linejoin="round"/>
+    <path d="${cordIn}Z" fill="none" stroke="#f6f1e8" stroke-width="1.8"/>
+    <g fill="#f6f1e8" fill-opacity=".95">${motifs}${picots}</g>
+    <g fill="#3a0812">${eyelets}</g>
     <g transform="rotate(${rot} ${cx} ${cy})">
       <path d="${heartPath(cx, cy, s)}" fill="url(#velvet)"/>
       <path d="${heartPath(cx, cy + 0.6, s - 5)}" fill="none" stroke="#ead9cc" stroke-opacity=".45" stroke-width=".55" stroke-dasharray="1.6 2.2"/>
