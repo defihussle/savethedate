@@ -236,15 +236,16 @@ body.entering .site, body.entered .site { visibility: visible; }
   overflow-x: clip;
 }
 .h-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.h-text { position: absolute; left: 7%; top: 5.5%; width: 60%; }
+/* Centred on the gilt oval (ovalSVG: cx 150, cy 118 in the 400 × 460 artwork). */
+.h-text { position: absolute; left: 37.5%; top: calc(118 / 460 * 100%); width: 52%; transform: translate(-50%, -50%); text-align: center; }
 .std { margin: 0; line-height: .8; }
 .std > span { display: block; }
-.std-save { font-size: 19cqw; padding-left: 1cqw; }
-.std-line { display: flex; align-items: baseline; margin-top: -1cqw; padding-left: 8cqw; }
-.std-the { font-size: 8.5cqw; margin-right: .6cqw; }
-.std-date { font-size: 19cqw; }
+.std-save { font-size: 17cqw; }
+.std-line { display: flex; align-items: baseline; justify-content: center; margin-top: -1cqw; }
+.std-the { font-size: 7.6cqw; margin-right: .6cqw; }
+.std-date { font-size: 17cqw; }
 .std-num {
-  margin: 4cqw 0 0 19cqw;
+  margin: 4cqw 0 0;
   font-family: var(--display);
   font-weight: 400;
   font-size: 7.2cqw;
