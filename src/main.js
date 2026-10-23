@@ -206,7 +206,7 @@ function tick() {
 }
 tick();
 
-// ── Page 3: details form (Google Sheet, with a Netlify Forms backup) ───────
+// ── Page 3: details form (Google Sheet) ────────────────────────────────────
 const form = $('#detailsForm');
 const status = $('#formStatus');
 const btn = form.querySelector('.submit');
@@ -217,12 +217,6 @@ form.addEventListener('submit', async (e) => {
   btn.textContent = 'Sending…';
   status.textContent = '';
   const body = new URLSearchParams(new FormData(form));
-  // Backup copy in Netlify Forms (deployed site only). It never decides what the guest sees.
-  fetch('/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body.toString(),
-  }).catch(() => {});
   try {
     // No headers, so the browser sends a simple request without a CORS preflight.
     const res = await fetch(WEDDING.sheetEndpoint, { method: 'POST', body });
