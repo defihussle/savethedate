@@ -206,31 +206,33 @@ function tick() {
 }
 tick();
 
-// ── Page 3: details form (Netlify Forms) ───────────────────────────────────
+// ── Page 3: details form (Google Sheet, with a Netlify Forms backup) ───────
 const form = $('#detailsForm');
 const status = $('#formStatus');
+const btn = form.querySelector('.submit');
+const btnLabel = btn.textContent;
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const btn = form.querySelector('.submit');
   btn.disabled = true;
-  status.textContent = 'Sending…';
-  const body = new URLSearchParams(new FormData(form)).toString();
-  // Also copy the answers into the Guest List spreadsheet. Apps Script doesn't allow
-  // cross-origin reads, so this is fire-and-forget; Netlify remains the record of truth.
-  if (WEDDING.sheetEndpoint) {
-    fetch(WEDDING.sheetEndpoint, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(body) }).catch(() => {});
-  }
+  btn.textContent = 'Sending…';
+  status.textContent = '';
+  const body = new URLSearchParams(new FormData(form));
+  // Backup copy in Netlify Forms (deployed site only). It never decides what the guest sees.
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: body.toString(),
+  }).catch(() => {});
   try {
-    const res = await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body,
-    });
-    if (!res.ok) throw new Error(String(res.status));
+    // No headers, so the browser sends a simple request without a CORS preflight.
+    const res = await fetch(WEDDING.sheetEndpoint, { method: 'POST', body });
+    const { result } = await res.json();
+    if (result !== 'success') throw new Error(result);
     form.classList.add('sent');
     status.textContent = 'Thank you — see you there!';
   } catch {
-    status.textContent = 'Something went wrong sending your details. Please try again.';
+    status.textContent = 'Sorry, we couldn’t send your details just now. Please try again.';
     btn.disabled = false;
+    btn.textContent = btnLabel;
   }
 });

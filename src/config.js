@@ -17,9 +17,9 @@ export const WEDDING = {
   // them in black & white. Landscape crops around 7:6 fit best.
   boothPhotos: ['/photos/lisboa-1.jpg', '/photos/lisboa-2.jpg', '/photos/lisboa-3.jpg'],
 
-  // Google Apps Script web app that adds each details form to the Wedding planner's
-  // Guest List (see google-sheet/apps-script.gs). Leave empty to use Netlify Forms only.
-  sheetEndpoint: '',
+  // Google Apps Script web app that saves each details form to the Google Sheet. Each field's
+  // name becomes a column header there, and it replies with JSON { "result": "success" }.
+  sheetEndpoint: 'https://script.google.com/macros/s/AKfycbz5d13eccYVisoA6jhsHmjmrgY4NIFqOza0Zr6RBX43kAXvrqpEh2s1qF0OdzVZvQdJ/exec',
 };
 
 // The Save the Date strip uses the same three photos; the playing card has its own

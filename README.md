@@ -18,4 +18,4 @@ npm run dev        # http://localhost:5180
 
 ## Going live (Netlify)
 
-`netlify.toml` is set up already (build `npm run build`, publish `dist`). The details form uses **Netlify Forms**. After the first deploy, submissions show up under *Forms → details* in the Netlify dashboard, and you can turn on email notifications there. The form only submits on the deployed site, not on the local dev server.
+`netlify.toml` is set up already (build `npm run build`, publish `dist`). The details form saves each response to the **Google Sheet** through the Apps Script web app set as `sheetEndpoint` in `src/config.js`, and that works from the local dev server too. Each field's `name` becomes a column header in the sheet. **Netlify Forms** also keeps a backup copy under *Forms → details* in the Netlify dashboard, but only on the deployed site.

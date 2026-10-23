@@ -116,10 +116,10 @@
 
       <form class="details-form" id="detailsForm" name="details" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-reveal>
         <input type="hidden" name="form-name" value="details" />
-        <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <p class="hp" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" aria-hidden="true" /></label></p>
         <label class="field">
           <span>Who should the invitation be addressed to? Please list the full name(s).</span>
-          <textarea name="names" rows="2" required autocomplete="name"></textarea>
+          <textarea name="name" rows="2" required autocomplete="name"></textarea>
         </label>
         <label class="field">
           <span>What is your mailing address?</span>
